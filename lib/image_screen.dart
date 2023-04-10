@@ -80,14 +80,14 @@ void _updateButtonsState() {
 void _onImageChanged(){
   setState(() {
     _isImageChanged = true;
-    _isUndoUsed = false; // reset undo state when image changes
-    _isRedoUsed = false; // reset redo state when image changes
+    _isUndoUsed = false; 
+    _isRedoUsed = false; 
   });
   _updateButtonsState();
 }
 
 void _undo() {
-  _updateButtonsState(); // обновляем состояние кнопок
+  _updateButtonsState(); 
   setState(() {
     _isUndoUsed = true; 
     _isRedoUsed = false;

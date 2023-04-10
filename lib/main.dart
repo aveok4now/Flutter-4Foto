@@ -282,11 +282,8 @@ class _EditorScreenState extends State<EditorScreen> {
 
   void _animateColors() async {
     while (true) {
-      // Wait for 3 seconds
       await Future.delayed(Duration(seconds: 3));
-      // Reverse the colors
       _colors = _colors.reversed.toList();
-      // Trigger a rebuild to update the AnimatedContainer's decoration property
       if (mounted) {
         setState(() {});
       }
