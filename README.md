@@ -1,4 +1,4 @@
-# flutter_application_2
+# 4Editor
 
 A new Flutter project.
 
