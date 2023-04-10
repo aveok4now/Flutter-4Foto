@@ -40,6 +40,11 @@ dependencies:
   provider: ^6.0.5
   url_launcher: ^6.1.10
   flutter_email_sender: ^5.2.0
+  awesome_notifications: ^0.7.4+1
+  flutter_local_notifications: ^12.0.4
+  shared_preferences: ^2.1.0
+  cron: ^0.5.1
+  
   
 
 flutter_native_splash:

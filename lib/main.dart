@@ -5,42 +5,56 @@ import 'package:image_picker/image_picker.dart';
 import 'hidden_drawer.dart';
 import 'image_screen.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 //mport 'package:flutter_sentry/flutter_sentry.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cron/cron.dart';
+import 'dart:async';
 
+void main() async {
+  // Инициализация пакета shared_preferences
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
 
+  // Получение времени последнего визита пользователя в приложение
+  final lastVisit = prefs.getInt('last_visit') ?? DateTime.now().millisecondsSinceEpoch;
 
-void main() {
+  // Сохранение текущего времени в shared_preferences
+  await prefs.setInt('last_visit', DateTime.now().millisecondsSinceEpoch);
+
+  // Инициализация пакета flutter_local_notifications
+  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+  final initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+  // Запуск бесконечного цикла для отправки уведомлений каждые 5 секунд
+  Stream.periodic(Duration(seconds: 5)).listen((_) async {
+    if (DateTime.now().millisecondsSinceEpoch >= lastVisit + 5000) {
+      await flutterLocalNotificationsPlugin.show(
+        0,
+        'Улучшайте свои фото',
+        'Давно Вас не было! Пора улучшать свои фото!',
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'channel id',
+            'channel name',
+            importance: Importance.max,
+            ticker: 'ticker',
+          ),
+        ),
+      );
+    }
+  });
+
   runApp(const MyApp());
 }
 
-/*class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final AnimationController _controller = AnimationController(
-      vsync: MyVSync(),
-      duration: const Duration(seconds: 2),
-    )..repeat(reverse: true);
-    final Animation<Color?> _animation = ColorTween(
-      begin: const Color(0xFFD63AF9),
-      end: const Color(0xFF4157D8),
-    ).animate(_controller);
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: '4Editor',
-      home: HomeScreen(animation: _animation),
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-    );
-  }
-}*/
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     final AnimationController _controller = AnimationController(
@@ -82,6 +96,8 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key, required this.animation}) : super(key: key);
 
   final Animation<Color?> animation;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -206,6 +222,8 @@ class EditorScreen extends StatefulWidget {
 class _EditorScreenState extends State<EditorScreen> {
   late List<Color> _colors;
 
+
+
   @override
   void initState() {
     super.initState();
@@ -215,6 +233,11 @@ class _EditorScreenState extends State<EditorScreen> {
     ];
     // Start animating the colors immediately on screen load
     _animateColors();
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed){
+    if (!isAllowed){
+      AwesomeNotifications().requestPermissionToSendNotifications();
+    }
+  });
   }
 
   void _animateColors() async {
