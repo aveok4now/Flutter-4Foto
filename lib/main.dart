@@ -12,24 +12,24 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cron/cron.dart';
 import 'dart:async';
 
-void main() async {
-  // Инициализация пакета shared_preferences
+/*void main() async {
+  
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
 
-  // Получение времени последнего визита пользователя в приложение
+
   final lastVisit = prefs.getInt('last_visit') ?? DateTime.now().millisecondsSinceEpoch;
 
-  // Сохранение текущего времени в shared_preferences
+  
   await prefs.setInt('last_visit', DateTime.now().millisecondsSinceEpoch);
 
-  // Инициализация пакета flutter_local_notifications
+  
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
   final initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
-  // Запуск бесконечного цикла для отправки уведомлений каждые 5 секунд
+  
   Stream.periodic(Duration(seconds: 5)).listen((_) async {
     if (DateTime.now().millisecondsSinceEpoch >= lastVisit + 5000) {
       await flutterLocalNotificationsPlugin.show(
@@ -49,7 +49,47 @@ void main() async {
   });
 
   runApp(const MyApp());
+}*/
+
+void main() async {
+  
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+
+  
+  final lastVisit = prefs.getInt('last_visit') ?? DateTime.now().millisecondsSinceEpoch;
+
+  
+  await prefs.setInt('last_visit', DateTime.now().millisecondsSinceEpoch);
+
+  
+  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+  final initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+  
+  Stream.periodic(Duration(days: 3)).listen((_) async {
+    if (DateTime.now().millisecondsSinceEpoch >= lastVisit + Duration(days: 3).inMilliseconds) {
+      await flutterLocalNotificationsPlugin.show(
+        0,
+        'Улучшайте свои фото',
+        'Давно Вас не было! Пора улучшать свои фото!',
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'channel id',
+            'channel name',
+            importance: Importance.max,
+            ticker: 'ticker',
+          ),
+        ),
+      );
+    }
+  });
+
+  runApp(const MyApp());
 }
+
 
 
 class MyApp extends StatelessWidget {
