@@ -29,6 +29,9 @@ class HiddenDrawerState extends State<HiddenDrawer> {
           );
 
 
+final String userName = "Джейн Марголис";
+final String avatarPath = "assets/jane.jpg";
+
   @override
   void initState() {
     super.initState();
@@ -65,3 +68,4 @@ class HiddenDrawerState extends State<HiddenDrawer> {
     );
   }
 }
+
