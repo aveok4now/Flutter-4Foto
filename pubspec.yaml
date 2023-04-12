@@ -44,6 +44,8 @@ dependencies:
   flutter_local_notifications: ^12.0.4
   shared_preferences: ^2.1.0
   cron: ^0.5.1
+  undo: ^1.4.0
+  photofilters: ^3.0.1
   
   
 

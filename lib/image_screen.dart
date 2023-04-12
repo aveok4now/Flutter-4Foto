@@ -4,6 +4,10 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:ui' as ui;
+import 'package:image/image.dart' as imageLib;
+import 'package:photofilters/photofilters.dart';
+import 'filters.dart';
+import 'dart:async';
 
 class ImageScreen extends StatefulWidget {
   final String imagePath;
@@ -19,13 +23,28 @@ class _ImageScreenState extends State<ImageScreen> {
   double _scale = 1.0;
   double _previousScale = 1.0;
   File? _croppedFile;
+  File? _originalImage;
   int _selectedIndex = 0;
   bool _isImageChanged = false;
   bool _isUndoUsed = false;
   bool _isRedoUsed = false;
+  List<File> _imageStack = [];
+  List<File> _redoStack = [];
+  double undoOpacity = 0.5;
+  double redoOpacity = 0.5;
+  double saveOpacity = 0.5;
+
 
   
-  
+  @override
+  void initState() {
+    super.initState();
+    _originalImage = File(widget.imagePath);
+    _imageStack.add(_originalImage!);
+  }
+
+
+
   Future<void> _cropImage() async {
     try {
       final croppedFile = await ImageCropper().cropImage(
@@ -40,10 +59,11 @@ class _ImageScreenState extends State<ImageScreen> {
         uiSettings: [
           AndroidUiSettings(
               toolbarTitle: '',
-              toolbarColor: Color.fromARGB(255, 67, 117, 255),
+              toolbarColor: Colors.cyan,
               toolbarWidgetColor: Colors.white,
               initAspectRatio: CropAspectRatioPreset.original,
-              lockAspectRatio: false),
+              lockAspectRatio: false,
+              activeControlsWidgetColor: Colors.cyan),
           IOSUiSettings(
             title: 'Cropper',
           ),
@@ -66,10 +86,20 @@ class _ImageScreenState extends State<ImageScreen> {
 
 void _updateButtonsState() {
   setState(() {
-    if (_isUndoUsed) {
+    if (_imageStack.isNotEmpty) {
+      _isUndoUsed = true;
+      undoOpacity = 1.0;
+    } else {
+      _isUndoUsed = false;
+      undoOpacity = 0.5;
+    }
+
+    if (_redoStack.isNotEmpty) {
       _isRedoUsed = true;
+      redoOpacity = 1.0;
     } else {
       _isRedoUsed = false;
+      redoOpacity = 0.5;
     }
   });
 }
@@ -77,33 +107,38 @@ void _updateButtonsState() {
 
 
 
+
 void _onImageChanged(){
   setState(() {
     _isImageChanged = true;
-    _isUndoUsed = false; 
-    _isRedoUsed = false; 
+     saveOpacity = 1.0;
+    _imageStack.add(_croppedFile!);
+    _redoStack.clear();
   });
   _updateButtonsState();
 }
 
 void _undo() {
-  _updateButtonsState(); 
-  setState(() {
-    _isUndoUsed = true; 
-    _isRedoUsed = false;
-  });
-  _onImageChanged();
+  if (_imageStack.isNotEmpty) {
+    _redoStack.add(_imageStack.removeLast());
+    setState(() {
+      _croppedFile = _imageStack.isNotEmpty ? _imageStack.last : null;
+      _isImageChanged = true;
+    });
+    _updateButtonsState();
+  }
 }
+
 
 void _redo() {
-  if (_isRedoUsed) {
+  if (_redoStack.isNotEmpty) {
     setState(() {
-      _isUndoUsed = true;
-      _isRedoUsed = false;
+      _croppedFile = _redoStack.removeLast();
+      _imageStack.add(_croppedFile!);
+      _isImageChanged = true;
     });
-    _onImageChanged();
+    _updateButtonsState();
   }
-  _updateButtonsState();
 }
 
 
@@ -111,7 +146,8 @@ void _redo() {
 
 
 
-  Future<void> _drawOnImage() async {}
+  Future<void> _drawOnImage() async {
+  }
 
   Future<void> _applyFilter() async {}
 
@@ -143,35 +179,43 @@ Widget build(BuildContext context) {
         Padding(
           padding : const EdgeInsets.only(right: 8.0),
           child: InkWell(
-            onTap: _isImageChanged ? () {} : null,
+            onTap: _isUndoUsed ? _undo : null,
+            child: Opacity(
+              opacity: undoOpacity,
+            
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Icon(Icons.undo),
             ),
           ),
-        
+        ),
         ),
 
         Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: InkWell(
-            onTap: _isUndoUsed ? () {} : null,
+            onTap: _isRedoUsed ? _redo : null,
+            child: Opacity(
+              opacity: redoOpacity,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Icon(Icons.redo),
             ),
           ),
-
+          ),
         ),
         Spacer(),
         Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: InkWell(
               onTap: _isImageChanged ?  () {}: null,
+              child: Opacity(
+                opacity: undoOpacity,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Icon(Icons.save),
               ),
+            ),
             ),
         ),
       ],
