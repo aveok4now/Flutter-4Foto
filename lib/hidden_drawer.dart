@@ -26,11 +26,9 @@ class HiddenDrawerState extends State<HiddenDrawer> {
             fontWeight: FontWeight.bold,
             fontSize: 20,
             color: Colors.white,
+            fontFamily: 'Ubuntu',
           );
 
-
-final String userName = "Джейн Марголис";
-final String avatarPath = "assets/jane.jpg";
 
   @override
   void initState() {
@@ -38,7 +36,7 @@ final String avatarPath = "assets/jane.jpg";
     _pages = [
       ScreenHiddenDrawer(
         ItemHiddenMenu(
-          name: 'Фоторедактор',
+          name: '4Editor',
           baseStyle: myTextStyle,
           selectedStyle: myTextStyle,
           colorLineSelected: Colors.white,
@@ -65,7 +63,7 @@ final String avatarPath = "assets/jane.jpg";
       initPositionSelected: 0,
       slidePercent: 60,
       contentCornerRadius: 30,
+      
     );
   }
 }
-
