@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 
@@ -43,6 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
+                fontFamily: 'Ubuntu',
               ),
             ),
             SizedBox(height: 16),
@@ -53,7 +55,8 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             SizedBox(height: 16),
-            ElevatedButton(
+            CupertinoButton.filled(
+              
               onPressed: _sendEmail,
               child: Text('Отправить'),
             ),
@@ -61,9 +64,10 @@ class _SettingsPageState extends State<SettingsPage> {
             Text(
               'Проект был выполнен в рамках конкурса "IT-Планета"',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
+                fontFamily: 'Ubuntu',
               ),
               textAlign: TextAlign.center,
             ),

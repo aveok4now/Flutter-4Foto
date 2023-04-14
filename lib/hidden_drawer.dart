@@ -3,6 +3,8 @@ import 'package:food/main.dart';
 import 'package:food/settings_page.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
 
+import 'links.dart';
+
 class HiddenDrawer extends StatefulWidget {
   const HiddenDrawer({super.key});
 
@@ -22,13 +24,12 @@ class HiddenDrawerState extends State<HiddenDrawer> {
         end: const Color(0xFF4157D8),
       ).animate(_controller);
 
- final myTextStyle = TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            color: Colors.white,
-            fontFamily: 'Ubuntu',
-          );
-
+  final myTextStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 20,
+    color: Colors.white,
+    fontFamily: 'Ubuntu',
+  );
 
   @override
   void initState() {
@@ -63,7 +64,7 @@ class HiddenDrawerState extends State<HiddenDrawer> {
       initPositionSelected: 0,
       slidePercent: 60,
       contentCornerRadius: 30,
-      
-    );
+      );
+      //tittleAppBar: 
   }
 }
