@@ -19,7 +19,7 @@ class _LinksState extends State<Links> {
   ),
   child: GestureDetector(
     onTap: () async {
-      const url = 'https://t.me/'; // здесь укажите ссылку на ваш канал Telegram
+      const url = 'https://t.me/'; 
       await launch(url);
     },
     child: Icon(Icons.telegram, color: Colors.white),
