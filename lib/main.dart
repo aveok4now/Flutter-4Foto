@@ -236,7 +236,6 @@ class HomeScreen extends StatelessWidget {
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
-                            fontFamily: 'Ubuntu',
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -272,7 +271,7 @@ class HomeScreen extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 18,
                                 color: CupertinoColors.white,
-                                fontFamily: 'Ubuntu'),
+                                /*fontFamily: 'Ubuntu'*/),
                           ),
                         ),
                       ],
@@ -297,7 +296,7 @@ class EditorScreen extends StatefulWidget {
 
 class _EditorScreenState extends State<EditorScreen> {
   late List<Color> _colors;
-
+  bool _showImage = true;
   /*var sizes = ["Small", "Medium", "Large"];
   var values = ["256x256", "512x512", "1024x1024"];
   String? dropValue;*/
@@ -339,6 +338,7 @@ class _EditorScreenState extends State<EditorScreen> {
       print("Enter something");
     }
   }
+  
 
   void _animateColors() async {
     while (true) {
@@ -366,93 +366,243 @@ class _EditorScreenState extends State<EditorScreen> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CupertinoNavigationBar(
-        backgroundColor: Colors.deepPurple,
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+ @override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: CupertinoNavigationBar(
+      backgroundColor: Colors.deepPurple,
+      automaticallyImplyLeading: false,
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    ),
+    body: AnimatedContainer(
+      duration: Duration(milliseconds: 500),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: _colors,
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
         ),
       ),
-      body: AnimatedContainer(
-        duration: Duration(milliseconds: 500),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: _colors,
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: Opacity(
+              opacity: 0.5,
+              child: Image.asset(
+                'assets/carti2.jpg',
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CupertinoButton(
-                onPressed: () async {
-                  final pickedFile = await ImagePicker().pickImage(
-                    source: ImageSource.gallery,
-                  );
-                  if (pickedFile != null) {
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CupertinoButton(
+                  onPressed: () async {
+                    final pickedFile = await ImagePicker().pickImage(
+                      source: ImageSource.gallery,
+                    );
+                    if (pickedFile != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ImageScreen(imagePath: pickedFile.path),
+                        ),
+                      );
+                    }
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.image,
+                      ),
+                      SizedBox(width: 8),
+                      Text('Выбрать фото'),
+                    ],
+                  ),
+                  color: Colors.deepPurple,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  borderRadius: BorderRadius.circular(32),
+                ),
+                const SizedBox(height: 16),
+                CupertinoButton(
+                  onPressed: () async {
+                    final pickedFile = await ImagePicker().pickImage(
+                      source: ImageSource.camera,
+                    );
+                    if (pickedFile != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ImageScreen(imagePath: pickedFile.path),
+                        ),
+                      );
+                    }
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.camera_alt),
+                      SizedBox(width: 8),
+                      Text('Сделать фото'),
+                    ],
+                  ),
+                  color: Colors.deepPurple,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  borderRadius: BorderRadius.circular(32),
+                ),
+                const SizedBox(height: 16),
+              ElevatedButton.icon(
+                  icon: const Icon(Icons.memory),
+                  label: const Text('Генерация фото с ИИ'),
+                  onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            ImageScreen(imagePath: pickedFile.path),
+                        builder: (context) => Scaffold(
+                            backgroundColor: Color.fromARGB(255, 58, 148, 183),
+                            resizeToAvoidBottomInset: false,
+                            appBar: AppBar(
+                              centerTitle: true,
+                              title: Text(
+                                "Генерация фото с ИИ",
+                                style: TextStyle(
+                                  color: whiteColor,
+                                ),
+                              ),
+                            ),
+                            body: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Container(
+                                                  height: 44,
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 4),
+                                                  decoration: BoxDecoration(
+                                                    color: whiteColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                  ),
+                                                  child: TextFormField(
+                                                    controller: inputText,
+                                                    decoration: InputDecoration(
+                                                      hintText:
+                                                          "Опишите то, что хотите создать...",
+                                                      border: InputBorder.none,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                              width: 300,
+                                              height: 44,
+                                              child: ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                      backgroundColor: btnColor,
+                                                      shape:
+                                                          const StadiumBorder()),
+                                                  onPressed: () async {
+                                                    String result;
+                                                    if (inputText
+                                                        .text.isNotEmpty) {
+                                                      setState(() {
+                                                        isLoaded = false;
+                                                        image = '';
+                                                      });
+                                                      generateImage();
+
+                                                      if (image != null) {
+                                                        setState(() {
+                                                          // image = result.toString();
+                                                          isLoaded = true;
+                                                        });
+                                                      }
+                                                    } else {
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        SnackBar(
+                                                          content: Text(
+                                                              "Введите, пожалуйста, текст"),
+                                                        ),
+                                                      );
+                                                    }
+                                                  },
+                                                  child:
+                                                      const Text("Создать"))),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 4,
+                                      child: isLoaded
+                                          ? Image.network(image!)
+                                          : Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                color: whiteColor,
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                 Image.asset(
+                                                      "assets/loading.gif"),
+                                                  SizedBox(height: 12),
+                                                  const Text(
+                                                    "Создание изображения...",
+                                                    style: TextStyle(
+                                                      fontSize: 18.0,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                    ),
+                                  ],
+                                ))),
                       ),
                     );
-                  }
-                },
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.image,
-                    ),
-                    SizedBox(width: 8),
-                    Text('Выбрать фото'),
-                  ],
-                ),
-                color: Colors.deepPurple,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                borderRadius: BorderRadius.circular(32),
-              ),
-              const SizedBox(height: 16),
-              CupertinoButton(
-                onPressed: () async {
-                  final pickedFile = await ImagePicker().pickImage(
-                    source: ImageSource.camera,
-                  );
-                  if (pickedFile != null) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ImageScreen(imagePath: pickedFile.path),
-                      ),
-                    );
-                  }
-                },
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.camera_alt),
-                    SizedBox(width: 8),
-                    Text('Сделать фото'),
-                  ],
-                ),
-                color: Colors.deepPurple,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                borderRadius: BorderRadius.circular(32),
-              ),
-              /* const SizedBox(height: 16),
+                  })
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+}
+
+/*const SizedBox(height: 16),
               ElevatedButton.icon(
                   icon: const Icon(Icons.memory),
                   label: const Text('Генерация фото с ИИ'),
@@ -581,10 +731,3 @@ class _EditorScreenState extends State<EditorScreen> {
                       ),
                     );
                   })*/
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
