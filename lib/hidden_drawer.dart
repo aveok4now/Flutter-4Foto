@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food/main.dart';
+import 'package:food/midjourney_page.dart';
 import 'package:food/settings_page.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
 
@@ -46,6 +47,15 @@ class HiddenDrawerState extends State<HiddenDrawer> {
       ),
       ScreenHiddenDrawer(
         ItemHiddenMenu(
+          name: 'Идеи нейросети',
+          baseStyle: myTextStyle,
+          selectedStyle: myTextStyle,
+          colorLineSelected: Colors.white,
+        ),
+        JourneyPage(),
+      ),
+      ScreenHiddenDrawer(
+        ItemHiddenMenu(
           name: 'О программе',
           baseStyle: myTextStyle,
           selectedStyle: myTextStyle,
@@ -53,6 +63,7 @@ class HiddenDrawerState extends State<HiddenDrawer> {
         ),
         SettingsPage(),
       ),
+      
     ];
   }
 

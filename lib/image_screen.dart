@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_photo_editor/flutter_photo_editor.dart';
 import 'dart:io';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
@@ -6,14 +7,14 @@ import 'package:flutter/cupertino.dart';
 import 'dart:ui' as ui;
 import 'package:image/image.dart' as imageLib;
 import 'package:photofilters/photofilters.dart';
-import 'filters.dart';
+//import 'filters.dart';
 import 'dart:async';
 
 class ImageScreen extends StatefulWidget {
   final String imagePath;
 
-  const ImageScreen({Key? key, required this.imagePath}) : super(key: key);
-
+  //const ImageScreen({Key? key, required this.imagePath, required File imageFile}) : super(key: key);
+const ImageScreen({Key? key, required this.imagePath}) : super(key: key);
   @override
   // ignore: library_private_types_in_public_api
   _ImageScreenState createState() => _ImageScreenState();
@@ -149,7 +150,32 @@ void _redo() {
   Future<void> _drawOnImage() async {
   }
 
-  Future<void> _applyFilter() async {}
+Future<void> _applyFilter() async {
+  final List<Filter> filters = presetFiltersList;
+  final imageLib.Image? image = imageLib.decodeImage(File(widget.imagePath).readAsBytesSync());
+  if (image != null) {
+    final Map<String, dynamic>? result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PhotoFilterSelector(
+          filename: '4edited',
+          filters: filters,
+          title: Text('Select a filter'),
+          image: image,
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+    if (result != null && result.containsKey('image_filtered')) {
+      setState(() {
+        _croppedFile = File(result['image_filtered']);
+        _onImageChanged();
+      });
+    }
+  }
+}
+
+
 
   Widget _buildImage() {
     final imagePath = _croppedFile?.path ?? widget.imagePath;
