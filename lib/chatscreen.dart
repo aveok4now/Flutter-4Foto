@@ -151,24 +151,35 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
           ),
           
           if (showVideo)
-          YoutubePlayer(
-            controller: _ytcontroller, 
-            showVideoProgressIndicator: true,
-            bottomActions: [
-              CurrentPosition(),
-              ProgressBar(
-                isExpanded: true,
-              ),
-              IconButton(
-      icon: Icon(Icons.close, color: whiteColor,),
-      onPressed: () {
-        setState(() {
-          showVideo = false;
-        });
-      },
-              ),
-            ],
+  Expanded(
+    child: Stack(
+      children: [
+        YoutubePlayer(
+          controller: _ytcontroller, 
+          showVideoProgressIndicator: true,
+          bottomActions: [
+            CurrentPosition(),
+            ProgressBar(
+              isExpanded: true,
             ),
+          ],
+        ),
+        Positioned(
+          top: 16,
+          right: 16,
+          child: IconButton(
+            icon: Icon(Icons.close, color: Colors.white),
+            onPressed: () {
+              setState(() {
+                showVideo = false;
+              });
+            },
+          ),
+        ),
+      ],
+    ),
+  ),
+
           
           Padding(
             padding: const EdgeInsets.all(8.0),
