@@ -5,6 +5,7 @@ import 'package:food/settings_page.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
 
 import 'chat_gpt.dart';
+import 'chatscreen.dart';
 import 'links.dart';
 
 class HiddenDrawer extends StatefulWidget {
@@ -51,25 +52,25 @@ class HiddenDrawerState extends State<HiddenDrawer> {
           name: 'Создано с ИИ',
           baseStyle: myTextStyle,
           selectedStyle: myTextStyle,
-          colorLineSelected: Colors.pink,
+          colorLineSelected: Colors.white,
         ),
         JourneyPage(),
       ),
       ScreenHiddenDrawer(
         ItemHiddenMenu(
-          name: 'Диалог с ИИ',
+          name: 'Чат-бот',
           baseStyle: myTextStyle,
           selectedStyle: myTextStyle,
-          colorLineSelected: Colors.pink,
+          colorLineSelected: Colors.white,
         ),
-      ChatGPTDialog(),
+      ChatbotScreen(),
       ),
       ScreenHiddenDrawer(
         ItemHiddenMenu(
           name: 'О программе',
           baseStyle: myTextStyle,
           selectedStyle: myTextStyle,
-          colorLineSelected: Colors.grey,
+          colorLineSelected: Colors.white,
         ),
         SettingsPage(),
       ),
