@@ -2,6 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/services.dart';
+import 'package:food/colors.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:video_player/video_player.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 void main() => runApp(ChatbotApp());
 
@@ -24,6 +28,22 @@ class ChatbotScreen extends StatefulWidget {
 class _ChatbotScreenState extends State<ChatbotScreen> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  final videoURL = "https://www.youtube.com/watch?v=s8IfCO8VWC8&t=4s";
+
+  late YoutubePlayerController _ytcontroller;
+  bool showVideo = false;
+
+  @override
+  void initState() {
+    final videoID = YoutubePlayer.convertUrlToId(videoURL);
+    _ytcontroller =YoutubePlayerController(
+      initialVideoId: videoID!,
+      flags: const YoutubePlayerFlags(
+        autoPlay: true,
+      ),
+    );
+    super.initState();
+  }
 
   final List<String> _chatMessages = <String>[
     'Привет, чем я могу тебе помочь?',
@@ -36,11 +56,21 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     'Какие эффекты сейчас в тренде?':
         'Сейчас очень популярны эффекты сепии, винтажа и черно-белого стиля.',
     'дарова мудила': 'даров братан',
+    'йоу' : 'йо', 
+    'stop callin' : 'my phone, just leave me alone, yeah, damn it (Yeah) Im not from this zone, Im not from my home, Im not from this planet (Yeah, yeah) Im high on life, my Glock talk to me, it told me, "Go blam it" (Bop, bop) Yeah, fuck what you sayin, you a lil bitch, go talk to your mommy (Mommy)',
   };
+
+
 
   void _showResponse(String question) {
     String response =
         _responses[question] ?? 'Извините, я не понял ваш вопрос.';
+
+    if (question == 'Как делать хорошие фото?') {
+       showVideo = true;
+    }
+
+
     setState(() {
       _chatMessages.add('Вы: $question');
       _chatMessages.add('Чат-бот: $response');
@@ -104,7 +134,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                               Clipboard.setData(ClipboardData(text: message));
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text("Текст скопирован"),
+                                  content: Text("Скопировано в буфер обмена"),
                                   backgroundColor: Colors.green,
                                   duration: Duration(seconds: 1),
                                 ),
@@ -119,6 +149,27 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
               ),
             ),
           ),
+          
+          if (showVideo)
+          YoutubePlayer(
+            controller: _ytcontroller, 
+            showVideoProgressIndicator: true,
+            bottomActions: [
+              CurrentPosition(),
+              ProgressBar(
+                isExpanded: true,
+              ),
+              IconButton(
+      icon: Icon(Icons.close, color: whiteColor,),
+      onPressed: () {
+        setState(() {
+          showVideo = false;
+        });
+      },
+              ),
+            ],
+            ),
+          
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -147,17 +198,21 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
               children: <Widget>[
                 CupertinoButton(
                   onPressed: () => _showResponse('Как делать хорошие фото?'),
+                  
                   child: Text(
                     'Как делать хорошие фото?',
                     textAlign: TextAlign.center,
                   ),
+                 
                   color: Colors.deepPurpleAccent,
                   borderRadius: BorderRadius.circular(20.0),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16.0,
                     vertical: 8.0,
                   ),
+                  
                 ),
+                
                 const SizedBox(width: 8.0),
                 CupertinoButton(
                   onPressed: () => _showResponse(
@@ -188,6 +243,8 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                     vertical: 8.0,
                   ),
                 ),
+
+
               ],
             ),
           ),
