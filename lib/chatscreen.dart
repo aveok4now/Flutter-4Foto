@@ -28,20 +28,45 @@ class ChatbotScreen extends StatefulWidget {
 class _ChatbotScreenState extends State<ChatbotScreen> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  final videoURL = "https://www.youtube.com/watch?v=s8IfCO8VWC8&t=4s";
+  final videoURL1 = "https://www.youtube.com/watch?v=s8IfCO8VWC8&t=4s";
+  final videoURL2 = "https://www.youtube.com/watch?v=xQfGY0zseag";
 
   late YoutubePlayerController _ytcontroller;
-  bool showVideo = false;
+  late YoutubePlayerController _ytcontroller2;
+  
+  bool showVideo1 = false;
+  bool showVideo2 = false;
+  bool showVideo3 = false;
+  bool showVideo4 = false;
+
+   Offset _offset = Offset(0.0, 0.0);
+
+  void onPanUpdate(DragUpdateDetails details) {
+    setState(() {
+      _offset = Offset(
+        _offset.dx + details.delta.dx,
+        _offset.dy + details.delta.dy,
+      );
+    });
+  }
 
   @override
   void initState() {
-    final videoID = YoutubePlayer.convertUrlToId(videoURL);
+    final videoID = YoutubePlayer.convertUrlToId(videoURL1);
+    final videoID2 = YoutubePlayer.convertUrlToId(videoURL2);
     _ytcontroller =YoutubePlayerController(
       initialVideoId: videoID!,
       flags: const YoutubePlayerFlags(
         autoPlay: true,
       ),
     );
+    _ytcontroller2 =YoutubePlayerController(
+      initialVideoId: videoID2!,
+      flags: const YoutubePlayerFlags(
+        autoPlay: true,
+      ),
+    );
+
     super.initState();
   }
 
@@ -50,11 +75,11 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   ];
   final Map<String, String> _responses = <String, String>{
     'Как делать хорошие фото?':
-        'Хорошие фотографии требуют хорошего света и правильной композиции.',
+        'Хорошие фотографии требуют хорошего света и правильной композиции. Рекомендую ознакомиться с видео-роликом ниже:', 
     'В какое время суток делать фото лучше всего?':
         'В первые часы утра и в последние часы дня свет более мягкий и теплый, что может создавать лучшие условия для съемки.',
-    'Какие эффекты сейчас в тренде?':
-        'Сейчас очень популярны эффекты сепии, винтажа и черно-белого стиля.',
+    'Какие фото сейчас в тренде?':
+        'Сейчас очень популярны фото с эффектами сепии, винтажа и черно-белого стиля.',
     'дарова мудила': 'даров братан',
     'йоу' : 'йо', 
     'stop callin' : 'my phone, just leave me alone, yeah, damn it (Yeah) Im not from this zone, Im not from my home, Im not from this planet (Yeah, yeah) Im high on life, my Glock talk to me, it told me, "Go blam it" (Bop, bop) Yeah, fuck what you sayin, you a lil bitch, go talk to your mommy (Mommy)',
@@ -67,7 +92,10 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
         _responses[question] ?? 'Извините, я не понял ваш вопрос.';
 
     if (question == 'Как делать хорошие фото?') {
-       showVideo = true;
+       showVideo1 = true;
+    }
+    else if (question == 'Какие фото сейчас в тренде?'){
+      showVideo2 = true;
     }
 
 
@@ -150,7 +178,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
             ),
           ),
           
-          if (showVideo)
+          if (showVideo1)
   Expanded(
     child: Stack(
       children: [
@@ -162,24 +190,59 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
             ProgressBar(
               isExpanded: true,
             ),
+            RemainingDuration(),
+            //CurrentPosition(),
           ],
         ),
         Positioned(
-          top: 16,
-          right: 16,
+          top: 0,
+          right: 0,
           child: IconButton(
             icon: Icon(Icons.close, color: Colors.white),
             onPressed: () {
               setState(() {
-                showVideo = false;
+                showVideo1 = false;
               });
             },
           ),
         ),
+        
       ],
     ),
   ),
 
+  if (showVideo2)
+  Expanded(
+    child: Stack(
+      children: [
+        YoutubePlayer(
+          controller: _ytcontroller2, 
+          showVideoProgressIndicator: true,
+          bottomActions: [
+            CurrentPosition(),
+            ProgressBar(
+              isExpanded: true,
+            ),
+            RemainingDuration(),
+            //CurrentPosition(),
+          ],
+        ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: IconButton(
+            icon: Icon(Icons.close, color: Colors.white),
+            onPressed: () {
+              setState(() {
+                showVideo2 = false;
+              });
+            },
+          ),
+        ),
+        
+      ],
+    ),
+  ),
           
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -242,7 +305,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                 const SizedBox(width: 8.0),
                 CupertinoButton(
                   onPressed: () =>
-                      _showResponse('Какие эффекты сейчас в тренде?'),
+                      _showResponse('Какие фото сейчас в тренде?'),
                   child: Text(
                     'Какие эффекты сейчас в тренде?',
                     textAlign: TextAlign.center,
