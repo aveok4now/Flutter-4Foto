@@ -41,6 +41,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
+  auto_size_text_pk:
+    dependency: transitive
+    description:
+      name: auto_size_text_pk
+      sha256: ced55de5336fa7f438c1f5a9aa234e25d7a120c1d40d376a7cdc2af28cdb6995
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   awesome_notifications:
     dependency: "direct main"
     description:
@@ -65,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.1"
+  chat_gpt_sdk:
+    dependency: "direct main"
+    description:
+      name: chat_gpt_sdk
+      sha256: "612c6199d7cd0f62197af742accd81c48441e7fbbe8131b43ca402c90063a52b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   clock:
     dependency: transitive
     description:
@@ -81,6 +97,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
+  community_material_icon:
+    dependency: "direct main"
+    description:
+      name: community_material_icon
+      sha256: bb389689f6278158d7b9d9b0c9433e603933283104fea226594590f61503fd08
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.9.55"
+  confetti:
+    dependency: "direct main"
+    description:
+      name: confetti
+      sha256: "8690fb3f138ff42958d419ef7dd0f0bb192895bea3c921214cb5c3fa82e597b1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.0"
   connectivity:
     dependency: "direct main"
     description:
@@ -161,6 +193,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.3"
+  dio:
+    dependency: transitive
+    description:
+      name: dio
+      sha256: "0894a098594263fe1caaba3520e3016d8a855caeb010a882273189cca10f11e9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.1"
   fake_async:
     dependency: transitive
     description:
@@ -190,6 +230,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_dotenv:
+    dependency: "direct main"
+    description:
+      name: flutter_dotenv
+      sha256: d9283d92059a22e9834bc0a31336658ffba77089fb6f3cc36751f1fc7c6661a3
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.2"
   flutter_email_sender:
     dependency: "direct main"
     description:
@@ -262,6 +310,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.9"
+  flutter_riverpod:
+    dependency: "direct main"
+    description:
+      name: flutter_riverpod
+      sha256: "812dfbb87af51e73e68ea038bcfd1c732078d6838d3388d03283db7dec0d1e5f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.4"
   flutter_share:
     dependency: "direct main"
     description:
@@ -648,6 +704,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
+  riverpod:
+    dependency: transitive
+    description:
+      name: riverpod
+      sha256: "77ab3bcd084bb19fa8717a526217787c725d7f5be938404c7839cd760fdf6ae5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.4"
   share_plus:
     dependency: "direct main"
     description:
@@ -757,6 +821,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  smooth_page_indicator:
+    dependency: "direct main"
+    description:
+      name: smooth_page_indicator
+      sha256: "8c301bc686892306cd41672c1880167f140c16be305d5ede8201fefd9fcda829"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   source_span:
     dependency: transitive
     description:
@@ -773,6 +845,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.0"
+  state_notifier:
+    dependency: transitive
+    description:
+      name: state_notifier
+      sha256: "8fe42610f179b843b12371e40db58c9444f8757f8b69d181c97e50787caed289"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.2+1"
   stream_channel:
     dependency: transitive
     description:
@@ -805,6 +885,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.16"
+  text_editor:
+    dependency: "direct main"
+    description:
+      name: text_editor
+      sha256: "944e68a16dd612da10ab324d69fe64dc70f37f20a8e7200b830ebbddc7ec42dd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.0"
   timezone:
     dependency: transitive
     description:
@@ -813,6 +901,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.1"
+  tuple:
+    dependency: "direct main"
+    description:
+      name: tuple
+      sha256: "0ea99cd2f9352b2586583ab2ce6489d1f95a5f6de6fb9492faaf97ae2060f0aa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   typed_data:
     dependency: transitive
     description:
@@ -917,6 +1013,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  velocity_x:
+    dependency: "direct main"
+    description:
+      name: velocity_x
+      sha256: b70a9de038ac2265cba77c030487463a75c66d65da8d4d917dc6834293ff73a3
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.6.0"
+  vxstate:
+    dependency: transitive
+    description:
+      name: vxstate
+      sha256: ed5a880018191c5cfed8528bd77f2a942b04847168ca12636a306c323d311086
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
   win32:
     dependency: transitive
     description:

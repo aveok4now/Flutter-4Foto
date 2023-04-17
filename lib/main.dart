@@ -21,6 +21,8 @@ import 'package:undo/undo.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:food/Apis Screen/api_services.dart';
 import 'package:http/http.dart' as http;
+
+import 'introduction.dart';
 /*void main() async {
   
   WidgetsFlutterBinding.ensureInitialized();
@@ -94,6 +96,25 @@ void main() async {
       );
     }
   });
+   Stream.periodic(Duration(days: 1)).listen((_) async {
+    if (DateTime.now().millisecondsSinceEpoch >=
+        lastVisit + Duration(days: 1).inMilliseconds) {
+      await flutterLocalNotificationsPlugin.show(
+        0,
+        'ИИ сегодня',
+        'Посмотрите, что предлагает ИИ прямо сейчас!',
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'channel id',
+            'channel name',
+            importance: Importance.max,
+            ticker: 'ticker',
+          ),
+        ),
+      );
+    }
+  });
+
 
   runApp(const MyApp());
 }
@@ -120,7 +141,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: Stack(
-          children: [HomeScreen(animation: _animation), HiddenDrawer()],
+          children: [Introduction(), HomeScreen(animation: _animation), HiddenDrawer(), Introduction()],
         ),
       ),
     );
@@ -464,7 +485,7 @@ Widget build(BuildContext context) {
                   borderRadius: BorderRadius.circular(32),
                 ),
                 const SizedBox(height: 16),
-              ElevatedButton.icon(
+             /* ElevatedButton.icon(
                   icon: const Icon(Icons.memory),
                   label: const Text('Генерация фото с ИИ'),
                   onPressed: () {
@@ -591,7 +612,7 @@ Widget build(BuildContext context) {
                                 ))),
                       ),
                     );
-                  })
+                  })*/
               ],
             ),
           ),

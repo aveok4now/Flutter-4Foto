@@ -331,7 +331,7 @@ class ImageViewer extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content:
-                              Text('Изображение успешно сохранено в галерею')),
+                              Text('Изображение успешно сохранено в галерею'), backgroundColor: Colors.green,),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -342,7 +342,7 @@ class ImageViewer extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                         content:
-                            Text('Изображение успешно сохранено в галерею')),
+                            Text('Изображение успешно сохранено в галерею'), backgroundColor: Colors.green,),
                   );
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -424,7 +424,7 @@ class ImageViewer extends StatelessWidget {
                       Icons.edit,
                       color: Colors.purple[300],
                     ),
-                    SizedBox(width: 15),
+                    SizedBox(width: 20),
                     Text(
                       'Редактировать фото',
                       style: TextStyle(

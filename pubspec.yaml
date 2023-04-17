@@ -58,8 +58,16 @@ dependencies:
   flutter_share: ^2.0.0
   image_gallery_saver: ^1.7.1
   fluttertoast: ^8.2.1
+  confetti: ^0.6.0
+  text_editor: ^0.7.0
+  smooth_page_indicator: ^1.0.0
+  chat_gpt_sdk: ^2.1.1
+  community_material_icon: ^5.9.55
+  flutter_riverpod: ^2.3.4
+  tuple: ^2.0.1
+  velocity_x: ^3.6.0
+  flutter_dotenv: ^5.0.2
   
-
 flutter_native_splash:
   image: assets/sym6.png
   color: "f9f9f9"
