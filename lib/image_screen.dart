@@ -320,9 +320,14 @@ class _ImageScreenState extends State<ImageScreen> {
                   label: 'Текст',
                 ),
                 BottomNavigationBarItem(
+                  icon: Icon(Icons.brush_outlined),
+                  label: 'Кисть',
+                ),
+                BottomNavigationBarItem(
                   icon: Icon(Icons.photo_filter),
                   label: 'Фильтры',
                 ),
+
               ],
               currentIndex: _selectedIndex,
               onTap: (index) {
@@ -457,9 +462,23 @@ void addTextToImage(File imageFile, String text) {
     }
   }
   break;
-      case 2:
+      case 3:
         _applyFilter();
         break;
+        case 2:
+        _draw();
+        break;
     }
+    
   }
+  
+ void _draw() async{
+  bool isSuccess = await FlutterPhotoEditor().editImage(widget.imagePath);
+  String editedImagePath = isSuccess ? widget.imagePath : "";
+  
+  // сохраняем отредактированное изображение с тем же именем и путь к нему, как у исходного изображения
+  await File(editedImagePath).copy(widget.imagePath);
+  //_onImageChanged();
+}
+
 }

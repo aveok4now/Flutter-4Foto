@@ -8,7 +8,7 @@ class IntroPage2 extends StatelessWidget {
     return Container(
       color: Colors.deepPurple[100],
        child: Center(
-        child: Text('Страница 2'),
+        child: Text('TODO'),
         
       )
       

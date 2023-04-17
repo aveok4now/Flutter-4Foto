@@ -67,6 +67,8 @@ dependencies:
   tuple: ^2.0.1
   velocity_x: ^3.6.0
   flutter_dotenv: ^5.0.2
+  video_player: ^2.6.1
+  youtube_player_flutter: ^8.1.2
   
 flutter_native_splash:
   image: assets/sym6.png
@@ -128,6 +130,15 @@ flutter:
         - asset: assets/fonts/Ubuntu-Bold.ttf
           weight: 700
           style: italic
+    - family: Pacifico
+      fonts:
+        - asset: assets/fonts/Pacifico-Regular.ttf
+    - family: Raleway
+      fonts:
+        - asset: assets/fonts/Raleway-BlackItalic.ttf
+        - asset: assets/fonts/Raleway-Bold.ttf
+        - asset: assets/fonts/Raleway-BoldItalic.ttf
+
           
   #
   # For details regarding fonts from package dependencies,

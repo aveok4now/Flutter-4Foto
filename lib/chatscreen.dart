@@ -6,6 +6,7 @@ import 'package:food/colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'dart:async';
 
 void main() => runApp(ChatbotApp());
 
@@ -142,6 +143,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     }
 
     setState(() {
+
       _chatMessages.add('Вы: $question');
       _chatMessages.add('Чат-бот: $response');
       _controller.clear();

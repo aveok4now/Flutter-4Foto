@@ -201,6 +201,7 @@ class HomeScreen extends StatelessWidget {
     return WillPopScope(
       onWillPop: () => _onBackPressed(context),
       child: Scaffold(
+        extendBodyBehindAppBar: true,
         body: AnimatedBuilder(
           animation: animation,
           builder: (BuildContext context, Widget? child) {
