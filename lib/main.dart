@@ -126,7 +126,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final AnimationController _controller = AnimationController(
       vsync: MyVSync(),
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
     final Animation<Color?> _animation = ColorTween(
       begin: const Color(0xFFD63AF9),
@@ -207,13 +207,13 @@ class HomeScreen extends StatelessWidget {
           builder: (BuildContext context, Widget? child) {
             return Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: RadialGradient(
                   colors: [
                     animation.value!,
                     animation.value!,
                   ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+                  radius: 3,
+              center: Alignment.center,
                 ),
               ),
               child: Stack(
@@ -252,9 +252,10 @@ class HomeScreen extends StatelessWidget {
                           speed: Duration(milliseconds: 100),
                           pause: Duration(milliseconds: 5000),
                           text: [
-                            'Начни улучшать свои фото прямо сейчас',
+                            'Всё, что тебя вдохновляет - здесь',
                           ],
                           textStyle: const TextStyle(
+                            fontFamily: 'Raleway',
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -262,38 +263,42 @@ class HomeScreen extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 32),
-                        CupertinoButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                pageBuilder:
-                                    (context, animation, secondaryAnimation) =>
-                                        const EditorScreen(),
-                                transitionsBuilder: (context, animation,
-                                    secondaryAnimation, child) {
-                                  return FadeTransition(
-                                    opacity: animation,
-                                    child: child,
-                                  );
-                                },
-                                transitionDuration:
-                                    const Duration(milliseconds: 500),
-                              ),
-                            );
-                          },
-                          color: CupertinoColors.activeBlue,
-                          borderRadius: BorderRadius.circular(32),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 48,
-                            vertical: 16,
-                          ),
-                          child: Text(
-                            'Начать',
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: CupertinoColors.white,
-                                /*fontFamily: 'Ubuntu'*/),
+                        Container(
+                          margin: EdgeInsets.only(top: 18),
+                          child: CupertinoButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder:
+                                      (context, animation, secondaryAnimation) =>
+                                          const EditorScreen(),
+                                  transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child) {
+                                    return FadeTransition(
+                                      opacity: animation,
+                                      child: child,
+                                    );
+                                  },
+                                  transitionDuration:
+                                      const Duration(milliseconds: 500),
+                                ),
+                              );
+                            },
+                            
+                            color: CupertinoColors.activeBlue,
+                            borderRadius: BorderRadius.circular(32),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 48,
+                              vertical: 16,
+                            ),
+                            child: Text(
+                              'Начать',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: CupertinoColors.white,
+                                  /*fontFamily: 'Ubuntu'*/),
+                            ),
                           ),
                         ),
                       ],

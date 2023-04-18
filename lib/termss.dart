@@ -19,12 +19,6 @@ class _IntroductionState extends State<Introduction> {
   PageController _controller = PageController();
   bool onLastPage =false;
 
-
-
-  
-
-
-
   @override
   Widget build(BuildContext context) {
     final AnimationController _controller2 = AnimationController(
@@ -61,7 +55,6 @@ class _IntroductionState extends State<Introduction> {
                 onTap: (){
                   _controller.jumpToPage(2);
                 },
-                child: Text('Проп.'),
                 ),
 
           SmoothPageIndicator(controller: _controller, count:3),
@@ -74,7 +67,6 @@ class _IntroductionState extends State<Introduction> {
                       return HiddenDrawer();
                   },),);
                 },
-                child: Text('Поехали'),
                 )
           : GestureDetector(
                 onTap: (){
@@ -83,7 +75,6 @@ class _IntroductionState extends State<Introduction> {
                     curve: Curves.easeIn,
                   );
                 },
-                child: Text('Далее')
           ),
         ],
         

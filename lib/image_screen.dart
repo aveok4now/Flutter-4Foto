@@ -10,7 +10,6 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:ui' as ui;
 import 'package:image/image.dart' as imageLib;
-import 'package:photofilters/photofilters.dart';
 //import 'filters.dart';
 import 'dart:async';
 import 'package:text_editor/text_editor.dart';
@@ -180,30 +179,17 @@ class _ImageScreenState extends State<ImageScreen> {
   }
 
   Future<void> _applyFilter() async {
-    final List<Filter> filters = presetFiltersList;
-    final imageLib.Image? image =
-        imageLib.decodeImage(File(widget.imagePath).readAsBytesSync());
-    if (image != null) {
-      final Map<String, dynamic>? result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => PhotoFilterSelector(
-            filename: '4edited',
-            filters: filters,
-            title: Text('Select a filter'),
-            image: image,
-            fit: BoxFit.contain,
-          ),
-        ),
-      );
-      if (result != null && result.containsKey('image_filtered')) {
-        setState(() {
-          _croppedFile = File(result['image_filtered']);
-          _onImageChanged();
-        });
-      }
-    }
+    //final List<Filter> filters = presetFiltersList;
   }
+   //   );
+     // if (result != null && result.containsKey('image_filtered')) {
+     //   setState(() {
+      //    _croppedFile = File(result['image_filtered']);
+     //     _onImageChanged();
+    //    });
+   //   }
+  //  }
+//  }
 
   Widget _buildImage() {
     final imagePath = _croppedFile?.path ?? widget.imagePath;
@@ -428,18 +414,18 @@ class _ImageScreenState extends State<ImageScreen> {
   }
 
 void addTextToImage(File imageFile, String text) {
-  // Чтение файла изображения
+
   final bytes = imageFile.readAsBytesSync();
   final image = img.decodeImage(bytes);
 
-  // Создание изображения с текстом
+
   final font = img.arial_24;
   final color = img.getColor(255, 255, 255);
   img.drawString(image!, font, 0, 0, text, color: color);
 
-  // Сохранение измененного изображения
+
   final newFile = File('${imageFile.path}_with_text.jpg');
-  newFile.writeAsBytesSync(img.encodeJpg(image!));
+  newFile.writeAsBytesSync(img.encodeJpg(image));
 }
 
   Future<void> _onTabTapped(int index) async {

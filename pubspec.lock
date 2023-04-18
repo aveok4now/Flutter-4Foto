@@ -330,10 +330,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_riverpod
-      sha256: "812dfbb87af51e73e68ea038bcfd1c732078d6838d3388d03283db7dec0d1e5f"
+      sha256: "9692634c2c00d2a1a5e96bbde0b79a7c6f0f266aa266d76cd52841f791949a89"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.4"
+    version: "2.3.5"
   flutter_share:
     dependency: "direct main"
     description:
@@ -680,14 +680,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.14.0"
-  photofilters:
-    dependency: "direct main"
-    description:
-      name: photofilters
-      sha256: "757197a7b54b4db36eed3fbdf0afcc8cc3b9058b1242c8f6675426aca1b56d39"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.1"
   platform:
     dependency: transitive
     description:
@@ -732,10 +724,10 @@ packages:
     dependency: transitive
     description:
       name: riverpod
-      sha256: "77ab3bcd084bb19fa8717a526217787c725d7f5be938404c7839cd760fdf6ae5"
+      sha256: ec5641067d111681ef825754d1327565c987985c7cb52e09bc867b78248854b2
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.4"
+    version: "2.3.5"
   share_plus:
     dependency: "direct main"
     description:
@@ -849,10 +841,10 @@ packages:
     dependency: "direct main"
     description:
       name: smooth_page_indicator
-      sha256: "8c301bc686892306cd41672c1880167f140c16be305d5ede8201fefd9fcda829"
+      sha256: "725bc638d5e79df0c84658e1291449996943f93bacbc2cec49963dbbab48d8ae"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.1.0"
   source_span:
     dependency: transitive
     description:
