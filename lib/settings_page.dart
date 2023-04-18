@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:food/hidden_drawer.dart';
+import 'package:food/politics.dart';
 import 'package:food/terms.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -119,7 +120,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     onTap: () {
                       Navigator.of(context).pop();
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) => const TermsOfUsePage()));
+                          builder: (BuildContext context) => const PoliticsPage()));
                     },
                   ),
                 ],

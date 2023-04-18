@@ -353,89 +353,94 @@ class ImageViewer extends StatelessWidget {
             ),
         ],
       ),
-      body: Container(
-        child: Stack(
-          children: [
-            PhotoViewGallery.builder(
-              itemCount: imageUrls.length,
-              builder: (BuildContext context, int index) {
-                return PhotoViewGalleryPageOptions(
-                  imageProvider: NetworkImage(imageUrls[index]),
-                  initialScale: PhotoViewComputedScale.contained,
-                  minScale: PhotoViewComputedScale.contained * 0.5,
-                  maxScale: PhotoViewComputedScale.covered * 2,
-                );
-              },
-              onPageChanged: (index) {
-                initialIndex = index;
-                print("index");
-                print(index);
-                print("initialIndex");
-                print(initialIndex);
-              },
-              scrollPhysics: const BouncingScrollPhysics(),
-              loadingBuilder: (context, event) => Center(
-                child: Container(
-                  width: 20.0,
-                  height: 20.0,
-                  child: CircularProgressIndicator(
-                    value: event == null
-                        ? 0
-                        : event.cumulativeBytesLoaded /
-                            event.expectedTotalBytes!,
+      body: SafeArea(
+        child: Container(
+          child: Stack(
+            children: [
+              PhotoViewGallery.builder(
+                itemCount: imageUrls.length,
+                builder: (BuildContext context, int index) {
+                  return PhotoViewGalleryPageOptions(
+                    imageProvider: NetworkImage(imageUrls[index]),
+                    initialScale: PhotoViewComputedScale.contained,
+                    minScale: PhotoViewComputedScale.contained * 0.5,
+                    maxScale: PhotoViewComputedScale.covered * 2,
+                  );
+                },
+                onPageChanged: (index) {
+                  initialIndex = index;
+                  print("index");
+                  print(index);
+                  print("initialIndex");
+                  print(initialIndex);
+                },
+                scrollPhysics: const BouncingScrollPhysics(),
+                loadingBuilder: (context, event) => Center(
+                  child: Container(
+                    width: 20.0,
+                    height: 20.0,
+                    child: CircularProgressIndicator(
+                      value: event == null
+                          ? 0
+                          : event.cumulativeBytesLoaded /
+                              event.expectedTotalBytes!,
+                    ),
+                  ),
+                ),
+                backgroundDecoration: BoxDecoration(
+                  color: Color.fromARGB(255, 250, 143, 179),
+                ),
+                pageController: PageController(initialPage: initialIndex),
+              ),
+              Positioned(
+                bottom: 20,
+                right: 20,
+                left: 20,
+                child: CupertinoButton(
+                  //padding: EdgeInsets.zero,
+                  minSize: 40,
+                  borderRadius: BorderRadius.all(Radius.circular(22.0)),
+                  alignment: Alignment.center,
+                  color: Colors.white,
+                  onPressed: () async {
+                    final currentContext = context;
+                    var response =
+                        await http.get(Uri.parse(imageUrls[initialIndex]));
+                    final bytes = response.bodyBytes;
+                    final temp = await getTemporaryDirectory();
+                    final fileName = imageUrls[initialIndex].split('/').last;
+                    final timestamp = DateTime.now().millisecondsSinceEpoch;
+                    final path = '${temp.path}/$timestamp-$fileName';
+                    File file = File(path);
+                    await file.writeAsBytes(bytes);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ImageScreen(
+                          imagePath: path,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.edit,
+                        color: Colors.purple[300],
+                      ),
+                      SizedBox(width: 15),
+                      Text(
+                        'Редактировать фото',
+                        style: TextStyle(
+                          color: Colors.purple[300],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              backgroundDecoration: BoxDecoration(
-                color: Color.fromARGB(255, 250, 143, 179),
-              ),
-              pageController: PageController(initialPage: initialIndex),
-            ),
-            Positioned(
-              bottom: 20,
-              right: 20,
-              left: 20,
-              child: CupertinoButton(
-                borderRadius: BorderRadius.all(Radius.circular(18.0)),
-                color: Colors.white,
-                onPressed: () async {
-                  final currentContext = context;
-                  var response =
-                      await http.get(Uri.parse(imageUrls[initialIndex]));
-                  final bytes = response.bodyBytes;
-                  final temp = await getTemporaryDirectory();
-                  final fileName = imageUrls[initialIndex].split('/').last;
-                  final timestamp = DateTime.now().millisecondsSinceEpoch;
-                  final path = '${temp.path}/$timestamp-$fileName';
-                  File file = File(path);
-                  await file.writeAsBytes(bytes);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ImageScreen(
-                        imagePath: path,
-                      ),
-                    ),
-                  );
-                },
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.edit,
-                      color: Colors.purple[300],
-                    ),
-                    SizedBox(width: 20),
-                    Text(
-                      'Редактировать фото',
-                      style: TextStyle(
-                        color: Colors.purple[300],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

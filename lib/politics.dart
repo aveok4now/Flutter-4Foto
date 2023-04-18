@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:food/hidden_drawer.dart';
 import 'package:food/settings_page.dart';
 
-class TermsOfUsePage extends StatefulWidget {
-  const TermsOfUsePage({Key? key}) : super(key: key);
+class PoliticsPage extends StatefulWidget {
+  const PoliticsPage({Key? key}) : super(key: key);
 
   @override
-  State<TermsOfUsePage> createState() => _TermsOfUsePageState();
+  State<PoliticsPage> createState() => _PoliticsPageState();
 }
 
-class _TermsOfUsePageState extends State<TermsOfUsePage> {
+class _PoliticsPageState extends State<PoliticsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
