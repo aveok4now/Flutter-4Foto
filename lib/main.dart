@@ -23,6 +23,7 @@ import 'package:food/Apis Screen/api_services.dart';
 import 'package:http/http.dart' as http;
 import 'chat_gpt.dart';
 import 'introduction.dart';
+import 'package:device_preview/device_preview.dart';
 /*void main() async {
   
   WidgetsFlutterBinding.ensureInitialized();
@@ -116,7 +117,8 @@ void main() async {
   });
 
 
-  runApp(const MyApp());
+  runApp(
+    DevicePreview(builder: (context) => MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -134,6 +136,9 @@ class MyApp extends StatelessWidget {
     ).animate(_controller);
 
     return MaterialApp(
+      useInheritedMediaQuery: true,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
       title: '4Editor',
       theme: ThemeData(
