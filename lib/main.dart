@@ -229,7 +229,7 @@ class HomeScreen extends StatelessWidget {
                     right: 0,
                     child: Image.asset(
                       'images/logo3.png',
-                      //fit: BoxFit.contain,
+                      fit: BoxFit.none,
                     ),
                   ),
                   const Positioned(

@@ -16,6 +16,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'image_screen.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class JourneyPage extends StatefulWidget {
   const JourneyPage({super.key});
@@ -95,6 +96,8 @@ class _TopImagesState extends State<TopImages> {
     super.initState();
     _fetchImages();
   }
+
+
 
   Future<void> _fetchImages() async {
     final images = await MidJourneyApi().fetchTop();

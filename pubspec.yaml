@@ -69,6 +69,8 @@ dependencies:
   flutter_dotenv: ^5.0.2
   video_player: ^2.6.1
   youtube_player_flutter: ^8.1.2
+  device_preview: ^1.1.0
+  flutter_cache_manager: ^3.3.0
   
 flutter_native_splash:
   image: assets/sym6.png
