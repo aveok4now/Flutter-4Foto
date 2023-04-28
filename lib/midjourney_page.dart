@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food/hidden_drawer.dart';
+import 'package:food/main.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:midjourney_api/midjourney_api.dart';
 import 'package:photo_view/photo_view.dart';
@@ -102,7 +104,8 @@ class NoInternetConnectionPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Отсутствует подключение к интернету', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+              Spacer(),
+              Text('Отсутствует подключение к интернету', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),),
               SizedBox(height: 16),
               CupertinoButton.filled(
                 onPressed: () {
@@ -110,6 +113,8 @@ class NoInternetConnectionPage extends StatelessWidget {
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => JourneyPage()));
                   
                 },
+                minSize: 1, // отключает минимальную высоту кнопки
+  padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text('Попробовать ещё раз'),
               ),
             ],
@@ -130,25 +135,86 @@ class TopImages extends StatefulWidget {
 class _TopImagesState extends State<TopImages> {
   late List<String> _images = [];
   bool _loading = true;
+  bool _showNoInet = false;
+  int c = 0;
+ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _fetchImages();
-    _checkInternetConnection();
+    _checkInternetConnection(context);
+     _scrollController.addListener(_onScroll);
   }
 
- Future<void> _checkInternetConnection() async {
+ Future<void> _checkInternetConnection(BuildContext context) async {
     var connectivityResult = await Connectivity().checkConnectivity();
+    _showNoInet = true;
     if (connectivityResult == ConnectivityResult.none) {
       // No internet connectivity
-      Navigator.push(context, MaterialPageRoute(builder: (context) => NoInternetConnectionPage(retryFunction: _checkInternetConnection)));
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: Text('Проверьте подключение и попробуйте ещё раз', textAlign: TextAlign.center,),
+          icon: Icon(Icons.wifi_off_sharp),
+          iconColor: Colors.pink,
+          titleTextStyle: TextStyle(fontFamily: 'Raleway', fontWeight: FontWeight.bold, color: Colors.white),
+          contentTextStyle: TextStyle(fontFamily: 'Raleway', fontWeight: FontWeight.normal, color: Colors.white,),
+          backgroundColor: Colors.deepPurple,
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CupertinoButton.filled(
+                  child: Text('Повторить попытку', style: TextStyle(fontFamily: 'Raleway', fontWeight: FontWeight.w900, color: Colors.pink),), 
+                  onPressed:  () {
+                    c++;
+                    _checkInternetConnection(context);
+
+                  }
+
+                  ),
+              ],
+            ),
+               Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                 children: [
+                   CupertinoButton.filled(
+              child: Text('Назад', style: TextStyle(fontFamily: 'Raleway', fontWeight: FontWeight.normal, fontSize: 12, color: Colors.pink),), 
+              onPressed:  () {
+                   Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HiddenDrawer(),
+                      ),
+                    );
+
+              }
+
+              ),
+                 ],
+               ),
+              
+          ],
+        ),
+      );
     } else {
       // Internet connectivity available
+      if(_showNoInet == true){
+        for (int i = 0; i<c; i++){
+      Navigator.pop(context);
+        }
+      }
       _fetchImages();
     }
   }
 
+void _onScroll() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _fetchImages();
+    }
+  }
 
   Future<void> _fetchImages() async {
     final images = await MidJourneyApi().fetchTop();
@@ -164,11 +230,11 @@ class _TopImagesState extends State<TopImages> {
     });
   }
 
-  @override
+ @override
   Widget build(BuildContext context) {
     bool showLoadingIndicator = _loading && _images.length < 4;
-    
-  return Stack(
+
+    return Stack(
       children: [
         Container(
           color: Color.fromARGB(255, 178, 246, 255),
@@ -182,9 +248,16 @@ class _TopImagesState extends State<TopImages> {
                           size: 50.0,
                         ),
                       )
-                    : GridView.count(
-                        crossAxisCount: 2,
-                        children: _images.map((imageUrl) {
+                    : GridView.builder(
+                        controller: _scrollController,
+                        gridDelegate:
+                            SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 1,
+                        ),
+                        itemCount: _images.length,
+                        itemBuilder: (context, index) {
+                          String imageUrl = _images[index];
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -192,20 +265,20 @@ class _TopImagesState extends State<TopImages> {
                                 MaterialPageRoute(
                                   builder: (context) => ImageViewer(
                                     imageUrls: _images,
-                                    initialIndex: _images.indexOf(imageUrl),
+                                    initialIndex: index,
                                   ),
                                 ),
                               );
                             },
                             child: Hero(
                               tag: imageUrl,
-                              child: Image.network(
-                                imageUrl,
+                              child: CachedNetworkImage(
+                                imageUrl: imageUrl,
                                 fit: BoxFit.cover,
                               ),
                             ),
                           );
-                        }).toList(),
+                        },
                       ),
               ),
             ],
@@ -221,7 +294,7 @@ class _TopImagesState extends State<TopImages> {
         ),
       ],
     );
-  } 
+  }
 }
 
 
@@ -235,11 +308,13 @@ class RecentImages extends StatefulWidget {
 class _RecentImagesState extends State<RecentImages> {
   List<String> _images = [];
   bool _loading = true;
+ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _fetchRecentImages();
+    _scrollController.addListener(_onScroll);
   }
 
   Future<void> _fetchRecentImages() async {
@@ -254,6 +329,13 @@ class _RecentImagesState extends State<RecentImages> {
     setState(() {
       _images.shuffle();
     });
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _fetchRecentImages();
+    }
   }
 
   @override
