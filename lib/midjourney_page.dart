@@ -142,9 +142,9 @@ class _TopImagesState extends State<TopImages> {
   bool _showNoInet = false;
   int c = 0;
   ScrollController _scrollController = ScrollController();
- int _crossAxisCount = 2;
- int _selectedCount = 2;
-bool _showFloatingButton = false;
+  int _crossAxisCount = 2;
+  int _selectedCount = 2;
+  bool _showFloatingButton = false;
 
   @override
   void initState() {
@@ -152,11 +152,11 @@ bool _showFloatingButton = false;
     _fetchImages();
     _checkInternetConnection(context);
     _scrollController.addListener(_onScroll);
-    
   }
 
-void _scrollListener() {
-    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
       setState(() {
         _showFloatingButton = true;
       });
@@ -166,6 +166,7 @@ void _scrollListener() {
       });
     }
   }
+
   Future<void> _checkInternetConnection(BuildContext context) async {
     var connectivityResult = await Connectivity().checkConnectivity();
     _showNoInet = true;
@@ -244,14 +245,16 @@ void _scrollListener() {
     }
   }
 
-  void _onScroll() {
+ void _onScroll() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       _fetchImages();
-       setState(() {
+    }
+     if (_scrollController.offset > 100) {
+    setState(() {
       _showFloatingButton = true;
     });
-    }else {
+  } else {
     setState(() {
       _showFloatingButton = false;
     });
@@ -270,189 +273,6 @@ void _scrollListener() {
     setState(() {
       _images.shuffle();
     });
-  }
-
-void _changeCrossAxisCount(int value) {
-    setState(() {
-      _crossAxisCount = value;
-    });
-  }
-
- @override
-  Widget build(BuildContext context) {
-    bool showLoadingIndicator = _loading && _images.length < 4;
-
-    return Stack(
-      children: [
-        Container(
-          color: Color.fromARGB(255, 178, 246, 255),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  PopupMenuButton<int>(
-                    onSelected: _changeCrossAxisCount,
-                    
-                    shadowColor: Colors.cyan,
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: 1,
-                        child: Text(
-                          '1',
-                          style: TextStyle(fontFamily: 'Raleway'),
-                        ),
-                      ),
-                      PopupMenuItem(
-                        value: 2,
-                        child: Text(
-                          '2',
-                          style: TextStyle(fontFamily: 'Raleway'),
-                        ),
-                      ),
-                      PopupMenuItem(
-                        value: 3,
-                        child: Text(
-                          '3',
-                          style: TextStyle(fontFamily: 'Raleway'),
-                        ),
-                      ),
-                      PopupMenuItem(
-                        value: 4,
-                        child: Text(
-                          '4',
-                          style: TextStyle(fontFamily: 'Raleway'),
-                        ),
-                      ),
-                    ],
-                    /*child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Icon(Icons.grid_view, color: Colors.pink,),
-                    ),*/
-                    icon: Icon(
-                      Icons.grid_view,
-                      size: 30,
-                      color: Colors.pink,
-                    ),
-                  ),
-                ],
-              ),
-              Expanded(
-                child: showLoadingIndicator
-                    ? Center(
-                        child: SpinKitWave(
-                          color: Colors.deepPurple,
-                          size: 50.0,
-                        ),
-                      )
-                    : GridView.builder(
-                        controller: _scrollController,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: _crossAxisCount,
-                          childAspectRatio: 2/3,
-                        ),
-                        itemCount: _images.length,
-                        itemBuilder: (context, index) {
-                          String imageUrl = _images[index];
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ImageViewer(
-                                    imageUrls: _images,
-                                    initialIndex: index,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Hero(
-                              tag: imageUrl,
-                              child: CachedNetworkImage(
-                                imageUrl: imageUrl,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          bottom: 16,
-          right: 16,
-          child: FloatingActionButton(
-            onPressed: _shuffleImages,
-            child: Icon(Icons.shuffle),
-          ),
-        ),
-        Positioned(
-          bottom: 16,
-          left: 16,
-          child: Visibility(
-            visible: _showFloatingButton,
-            child: FloatingActionButton(
-              onPressed: () {
-                _scrollController.animateTo(0, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
-              },
-              child: Icon(Icons.arrow_upward_rounded),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class RecentImages extends StatefulWidget {
-  const RecentImages({Key? key});
-
-  @override
-  _RecentImagesState createState() => _RecentImagesState();
-}
-
-class _RecentImagesState extends State<RecentImages> {
-  List<String> _images = [];
-  bool _loading = true;
-  ScrollController _scrollController = ScrollController();
-  int _crossAxisCount = 2;
-  bool _showFloatingButton = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchRecentImages();
-    _scrollController.addListener(_onScroll);
-  }
-
-  Future<void> _fetchRecentImages() async {
-    final images = await MidJourneyApi().fetchRecent();
-    setState(() {
-      _images = images;
-      _loading = false;
-    });
-  }
-
-  void _shuffleImages() {
-    setState(() {
-      _images.shuffle();
-    });
-  }
-
- void _onScroll() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      _fetchRecentImages();
-       setState(() {
-      _showFloatingButton = true;
-    });
-    }else {
-    setState(() {
-      _showFloatingButton = false;
-    });
-  }
   }
 
   void _changeCrossAxisCount(int value) {
@@ -531,7 +351,7 @@ class _RecentImagesState extends State<RecentImages> {
                         controller: _scrollController,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: _crossAxisCount,
-                          childAspectRatio: 2/3,
+                          childAspectRatio: 2 / 3,
                         ),
                         itemCount: _images.length,
                         itemBuilder: (context, index) {
@@ -577,7 +397,223 @@ class _RecentImagesState extends State<RecentImages> {
             visible: _showFloatingButton,
             child: FloatingActionButton(
               onPressed: () {
-                _scrollController.animateTo(0, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+                _scrollController.animateTo(0,
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.linear);
+              },
+              child: Icon(Icons.arrow_upward_rounded),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class RecentImages extends StatefulWidget {
+  const RecentImages({Key? key});
+
+  @override
+  _RecentImagesState createState() => _RecentImagesState();
+}
+
+class _RecentImagesState extends State<RecentImages> {
+  List<String> _images = [];
+  bool _loading = true;
+  ScrollController _scrollController = ScrollController();
+  int _crossAxisCount = 2;
+  bool _showFloatingButton = false;
+  bool isLongPressed = false;
+  String selectedImageUrl = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchRecentImages();
+    _scrollController.addListener(_onScroll);
+  }
+
+  Future<void> _fetchRecentImages() async {
+    final images = await MidJourneyApi().fetchRecent();
+    setState(() {
+      _images = images;
+      _loading = false;
+    });
+  }
+
+  void _shuffleImages() {
+    setState(() {
+      _images.shuffle();
+    });
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _fetchRecentImages();
+    }
+     if (_scrollController.offset > 100) {
+    setState(() {
+      _showFloatingButton = true;
+    });
+  } else {
+    setState(() {
+      _showFloatingButton = false;
+    });
+  }
+  }
+
+  void _changeCrossAxisCount(int value) {
+    setState(() {
+      _crossAxisCount = value;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    bool showLoadingIndicator = _loading && _images.length < 4;
+
+    return Stack(
+      children: [
+        Visibility(
+          visible: isLongPressed,
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                isLongPressed = false;
+                selectedImageUrl = '';
+              });
+            },
+            child: Container(
+              color: Colors.black54,
+              child: Center(
+                child: CachedNetworkImage(
+                  imageUrl: selectedImageUrl,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Container(
+          color: Color.fromARGB(255, 178, 246, 255),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  PopupMenuButton<int>(
+                    onSelected: _changeCrossAxisCount,
+                    shadowColor: Colors.cyan,
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 1,
+                        child: Text(
+                          '1',
+                          style: TextStyle(fontFamily: 'Raleway'),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: 2,
+                        child: Text(
+                          '2',
+                          style: TextStyle(fontFamily: 'Raleway'),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: 3,
+                        child: Text(
+                          '3',
+                          style: TextStyle(fontFamily: 'Raleway'),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: 4,
+                        child: Text(
+                          '4',
+                          style: TextStyle(fontFamily: 'Raleway'),
+                        ),
+                      ),
+                    ],
+                    /*child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.grid_view, color: Colors.pink,),
+                    ),*/
+                    icon: Icon(
+                      Icons.grid_view,
+                      size: 30,
+                      color: Colors.pink,
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: showLoadingIndicator
+                    ? Center(
+                        child: SpinKitWave(
+                          color: Colors.deepPurple,
+                          size: 50.0,
+                        ),
+                      )
+                    : GridView.builder(
+                        controller: _scrollController,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: _crossAxisCount,
+                          childAspectRatio: 2 / 3,
+                        ),
+                        itemCount: _images.length,
+                        itemBuilder: (context, index) {
+                          String imageUrl = _images[index];
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ImageViewer(
+                                    imageUrls: _images,
+                                    initialIndex: index,
+                                  ),
+                                ),
+                              );
+                            },
+                            onLongPress: () {
+                              setState(() {
+                                isLongPressed = true;
+                                selectedImageUrl = imageUrl;
+                              });
+                            },
+                            child: Hero(
+                              tag: imageUrl,
+                              child: CachedNetworkImage(
+                                imageUrl: imageUrl,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          bottom: 16,
+          right: 16,
+          child: FloatingActionButton(
+            onPressed: _shuffleImages,
+            child: Icon(Icons.shuffle),
+          ),
+        ),
+        Positioned(
+          bottom: 16,
+          left: 16,
+          child: Visibility(
+            visible: _showFloatingButton,
+            child: FloatingActionButton(
+              onPressed: () {
+                _scrollController.animateTo(0,
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.linear);
               },
               child: Icon(Icons.arrow_upward_rounded),
             ),
