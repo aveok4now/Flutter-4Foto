@@ -338,9 +338,10 @@ ScrollController _scrollController = ScrollController();
     }
   }
 
-  @override
+ @override
   Widget build(BuildContext context) {
     bool showLoadingIndicator = _loading && _images.length < 4;
+
     return Stack(
       children: [
         Container(
@@ -355,9 +356,16 @@ ScrollController _scrollController = ScrollController();
                           size: 50.0,
                         ),
                       )
-                    : GridView.count(
-                        crossAxisCount: 2,
-                        children: _images.map((imageUrl) {
+                    : GridView.builder(
+                        controller: _scrollController,
+                        gridDelegate:
+                            SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 1,
+                        ),
+                        itemCount: _images.length,
+                        itemBuilder: (context, index) {
+                          String imageUrl = _images[index];
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -365,20 +373,20 @@ ScrollController _scrollController = ScrollController();
                                 MaterialPageRoute(
                                   builder: (context) => ImageViewer(
                                     imageUrls: _images,
-                                    initialIndex: _images.indexOf(imageUrl),
+                                    initialIndex: index,
                                   ),
                                 ),
                               );
                             },
                             child: Hero(
                               tag: imageUrl,
-                              child: Image.network(
-                                imageUrl,
+                              child: CachedNetworkImage(
+                                imageUrl: imageUrl,
                                 fit: BoxFit.cover,
                               ),
                             ),
                           );
-                        }).toList(),
+                        },
                       ),
               ),
             ],
