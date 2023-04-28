@@ -308,7 +308,8 @@ class RecentImages extends StatefulWidget {
 class _RecentImagesState extends State<RecentImages> {
   List<String> _images = [];
   bool _loading = true;
-ScrollController _scrollController = ScrollController();
+  ScrollController _scrollController = ScrollController();
+  int _crossAxisCount = 2;
 
   @override
   void initState() {
@@ -338,7 +339,13 @@ ScrollController _scrollController = ScrollController();
     }
   }
 
- @override
+  void _changeCrossAxisCount(int value) {
+    setState(() {
+      _crossAxisCount = value;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     bool showLoadingIndicator = _loading && _images.length < 4;
 
@@ -348,6 +355,37 @@ ScrollController _scrollController = ScrollController();
           color: Color.fromARGB(255, 178, 246, 255),
           child: Column(
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  PopupMenuButton<int>(
+                    onSelected: _changeCrossAxisCount,
+                    shadowColor: Colors.cyan,
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 1,
+                        child: Text('1', style: TextStyle(fontFamily: 'Raleway'),),
+                      ),
+                      PopupMenuItem(
+                        value: 2,
+                        child: Text('2', style: TextStyle(fontFamily: 'Raleway'),),
+                      ),
+                      PopupMenuItem(
+                        value: 3,
+                        child: Text('3', style: TextStyle(fontFamily: 'Raleway'),),
+                      ),
+                      PopupMenuItem(
+                        value: 4,
+                        child: Text('4', style: TextStyle(fontFamily: 'Raleway'),),
+                      ),
+                    ],
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.grid_view, color: Colors.pink,),
+                    ),
+                  ),
+                ],
+              ),
               Expanded(
                 child: showLoadingIndicator
                     ? Center(
@@ -360,7 +398,7 @@ ScrollController _scrollController = ScrollController();
                         controller: _scrollController,
                         gridDelegate:
                             SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
+                          crossAxisCount: _crossAxisCount,
                           childAspectRatio: 1,
                         ),
                         itemCount: _images.length,
