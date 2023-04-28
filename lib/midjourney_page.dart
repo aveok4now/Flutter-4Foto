@@ -144,6 +144,7 @@ class _TopImagesState extends State<TopImages> {
   ScrollController _scrollController = ScrollController();
  int _crossAxisCount = 2;
  int _selectedCount = 2;
+bool _showFloatingButton = false;
 
   @override
   void initState() {
@@ -151,8 +152,20 @@ class _TopImagesState extends State<TopImages> {
     _fetchImages();
     _checkInternetConnection(context);
     _scrollController.addListener(_onScroll);
+    
   }
 
+void _scrollListener() {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      setState(() {
+        _showFloatingButton = true;
+      });
+    } else {
+      setState(() {
+        _showFloatingButton = false;
+      });
+    }
+  }
   Future<void> _checkInternetConnection(BuildContext context) async {
     var connectivityResult = await Connectivity().checkConnectivity();
     _showNoInet = true;
@@ -235,7 +248,14 @@ class _TopImagesState extends State<TopImages> {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       _fetchImages();
-    }
+       setState(() {
+      _showFloatingButton = true;
+    });
+    }else {
+    setState(() {
+      _showFloatingButton = false;
+    });
+  }
   }
 
   Future<void> _fetchImages() async {
@@ -368,6 +388,19 @@ void _changeCrossAxisCount(int value) {
             child: Icon(Icons.shuffle),
           ),
         ),
+        Positioned(
+          bottom: 16,
+          left: 16,
+          child: Visibility(
+            visible: _showFloatingButton,
+            child: FloatingActionButton(
+              onPressed: () {
+                _scrollController.animateTo(0, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+              },
+              child: Icon(Icons.arrow_upward_rounded),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -385,6 +418,7 @@ class _RecentImagesState extends State<RecentImages> {
   bool _loading = true;
   ScrollController _scrollController = ScrollController();
   int _crossAxisCount = 2;
+  bool _showFloatingButton = false;
 
   @override
   void initState() {
@@ -407,11 +441,18 @@ class _RecentImagesState extends State<RecentImages> {
     });
   }
 
-  void _onScroll() {
+ void _onScroll() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       _fetchRecentImages();
-    }
+       setState(() {
+      _showFloatingButton = true;
+    });
+    }else {
+    setState(() {
+      _showFloatingButton = false;
+    });
+  }
   }
 
   void _changeCrossAxisCount(int value) {
@@ -527,6 +568,19 @@ class _RecentImagesState extends State<RecentImages> {
           child: FloatingActionButton(
             onPressed: _shuffleImages,
             child: Icon(Icons.shuffle),
+          ),
+        ),
+        Positioned(
+          bottom: 16,
+          left: 16,
+          child: Visibility(
+            visible: _showFloatingButton,
+            child: FloatingActionButton(
+              onPressed: () {
+                _scrollController.animateTo(0, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+              },
+              child: Icon(Icons.arrow_upward_rounded),
+            ),
           ),
         ),
       ],
