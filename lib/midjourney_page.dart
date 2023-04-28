@@ -17,6 +17,8 @@ import 'image_screen.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connectivity/connectivity.dart';
 
 class JourneyPage extends StatefulWidget {
   const JourneyPage({super.key});
@@ -80,6 +82,44 @@ class _JourneyState extends State<JourneyPage> {
   }
 }
 
+class NoInternetConnectionPage extends StatelessWidget {
+  final Function retryFunction;
+
+  const NoInternetConnectionPage({required this.retryFunction});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.cyanAccent,
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/noinet.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Отсутствует подключение к интернету', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+              SizedBox(height: 16),
+              CupertinoButton.filled(
+                onPressed: () {
+                  retryFunction();
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => JourneyPage()));
+                  
+                },
+                child: Text('Попробовать ещё раз'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class TopImages extends StatefulWidget {
   const TopImages({Key? key});
 
@@ -95,8 +135,19 @@ class _TopImagesState extends State<TopImages> {
   void initState() {
     super.initState();
     _fetchImages();
+    _checkInternetConnection();
   }
 
+ Future<void> _checkInternetConnection() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      // No internet connectivity
+      Navigator.push(context, MaterialPageRoute(builder: (context) => NoInternetConnectionPage(retryFunction: _checkInternetConnection)));
+    } else {
+      // Internet connectivity available
+      _fetchImages();
+    }
+  }
 
 
   Future<void> _fetchImages() async {
@@ -116,7 +167,8 @@ class _TopImagesState extends State<TopImages> {
   @override
   Widget build(BuildContext context) {
     bool showLoadingIndicator = _loading && _images.length < 4;
-    return Stack(
+    
+  return Stack(
       children: [
         Container(
           color: Color.fromARGB(255, 178, 246, 255),
@@ -169,8 +221,9 @@ class _TopImagesState extends State<TopImages> {
         ),
       ],
     );
-  }
+  } 
 }
+
 
 class RecentImages extends StatefulWidget {
   const RecentImages({Key? key});
