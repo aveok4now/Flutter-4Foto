@@ -105,16 +105,20 @@ class NoInternetConnectionPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Spacer(),
-              Text('Отсутствует подключение к интернету', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),),
+              Text(
+                'Отсутствует подключение к интернету',
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+              ),
               SizedBox(height: 16),
               CupertinoButton.filled(
                 onPressed: () {
                   retryFunction();
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => JourneyPage()));
-                  
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => JourneyPage()));
                 },
                 minSize: 1, // отключает минимальную высоту кнопки
-  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text('Попробовать ещё раз'),
               ),
             ],
@@ -137,17 +141,19 @@ class _TopImagesState extends State<TopImages> {
   bool _loading = true;
   bool _showNoInet = false;
   int c = 0;
-ScrollController _scrollController = ScrollController();
+  ScrollController _scrollController = ScrollController();
+ int _crossAxisCount = 2;
+ int _selectedCount = 2;
 
   @override
   void initState() {
     super.initState();
     _fetchImages();
     _checkInternetConnection(context);
-     _scrollController.addListener(_onScroll);
+    _scrollController.addListener(_onScroll);
   }
 
- Future<void> _checkInternetConnection(BuildContext context) async {
+  Future<void> _checkInternetConnection(BuildContext context) async {
     var connectivityResult = await Connectivity().checkConnectivity();
     _showNoInet = true;
     if (connectivityResult == ConnectivityResult.none) {
@@ -155,61 +161,77 @@ ScrollController _scrollController = ScrollController();
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          content: Text('Проверьте подключение и попробуйте ещё раз', textAlign: TextAlign.center,),
+          content: Text(
+            'Проверьте подключение и попробуйте ещё раз',
+            textAlign: TextAlign.center,
+          ),
           icon: Icon(Icons.wifi_off_sharp),
           iconColor: Colors.pink,
-          titleTextStyle: TextStyle(fontFamily: 'Raleway', fontWeight: FontWeight.bold, color: Colors.white),
-          contentTextStyle: TextStyle(fontFamily: 'Raleway', fontWeight: FontWeight.normal, color: Colors.white,),
+          titleTextStyle: TextStyle(
+              fontFamily: 'Raleway',
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
+          contentTextStyle: TextStyle(
+            fontFamily: 'Raleway',
+            fontWeight: FontWeight.normal,
+            color: Colors.white,
+          ),
           backgroundColor: Colors.deepPurple,
           actions: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 CupertinoButton.filled(
-                  child: Text('Повторить попытку', style: TextStyle(fontFamily: 'Raleway', fontWeight: FontWeight.w900, color: Colors.pink),), 
-                  onPressed:  () {
-                    c++;
-                    _checkInternetConnection(context);
-
-                  }
-
-                  ),
+                    child: Text(
+                      'Повторить попытку',
+                      style: TextStyle(
+                          fontFamily: 'Raleway',
+                          fontWeight: FontWeight.w900,
+                          color: Colors.pink),
+                    ),
+                    onPressed: () {
+                      c++;
+                      _checkInternetConnection(context);
+                    }),
               ],
             ),
-               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                 children: [
-                   CupertinoButton.filled(
-              child: Text('Назад', style: TextStyle(fontFamily: 'Raleway', fontWeight: FontWeight.normal, fontSize: 12, color: Colors.pink),), 
-              onPressed:  () {
-                   Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HiddenDrawer(),
-                      ),
-                    );
-
-              }
-
-              ),
-                 ],
-               ),
-              
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CupertinoButton.filled(
+                    child: Text(
+                      'Назад',
+                      style: TextStyle(
+                          fontFamily: 'Raleway',
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12,
+                          color: Colors.pink),
+                    ),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HiddenDrawer(),
+                        ),
+                      );
+                    }),
+              ],
+            ),
           ],
         ),
       );
     } else {
       // Internet connectivity available
-      if(_showNoInet == true){
-        for (int i = 0; i<c; i++){
-      Navigator.pop(context);
+      if (_showNoInet == true) {
+        for (int i = 0; i < c; i++) {
+          Navigator.pop(context);
         }
       }
       _fetchImages();
     }
   }
 
-void _onScroll() {
+  void _onScroll() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       _fetchImages();
@@ -230,6 +252,12 @@ void _onScroll() {
     });
   }
 
+void _changeCrossAxisCount(int value) {
+    setState(() {
+      _crossAxisCount = value;
+    });
+  }
+
  @override
   Widget build(BuildContext context) {
     bool showLoadingIndicator = _loading && _images.length < 4;
@@ -240,6 +268,55 @@ void _onScroll() {
           color: Color.fromARGB(255, 178, 246, 255),
           child: Column(
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  PopupMenuButton<int>(
+                    onSelected: _changeCrossAxisCount,
+                    
+                    shadowColor: Colors.cyan,
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 1,
+                        child: Text(
+                          '1',
+                          style: TextStyle(fontFamily: 'Raleway'),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: 2,
+                        child: Text(
+                          '2',
+                          style: TextStyle(fontFamily: 'Raleway'),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: 3,
+                        child: Text(
+                          '3',
+                          style: TextStyle(fontFamily: 'Raleway'),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: 4,
+                        child: Text(
+                          '4',
+                          style: TextStyle(fontFamily: 'Raleway'),
+                        ),
+                      ),
+                    ],
+                    /*child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.grid_view, color: Colors.pink,),
+                    ),*/
+                    icon: Icon(
+                      Icons.grid_view,
+                      size: 30,
+                      color: Colors.pink,
+                    ),
+                  ),
+                ],
+              ),
               Expanded(
                 child: showLoadingIndicator
                     ? Center(
@@ -250,10 +327,9 @@ void _onScroll() {
                       )
                     : GridView.builder(
                         controller: _scrollController,
-                        gridDelegate:
-                            SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 1,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: _crossAxisCount,
+                          childAspectRatio: 2/3,
                         ),
                         itemCount: _images.length,
                         itemBuilder: (context, index) {
@@ -296,7 +372,6 @@ void _onScroll() {
     );
   }
 }
-
 
 class RecentImages extends StatefulWidget {
   const RecentImages({Key? key});
@@ -364,24 +439,41 @@ class _RecentImagesState extends State<RecentImages> {
                     itemBuilder: (context) => [
                       PopupMenuItem(
                         value: 1,
-                        child: Text('1', style: TextStyle(fontFamily: 'Raleway'),),
+                        child: Text(
+                          '1',
+                          style: TextStyle(fontFamily: 'Raleway'),
+                        ),
                       ),
                       PopupMenuItem(
                         value: 2,
-                        child: Text('2', style: TextStyle(fontFamily: 'Raleway'),),
+                        child: Text(
+                          '2',
+                          style: TextStyle(fontFamily: 'Raleway'),
+                        ),
                       ),
                       PopupMenuItem(
                         value: 3,
-                        child: Text('3', style: TextStyle(fontFamily: 'Raleway'),),
+                        child: Text(
+                          '3',
+                          style: TextStyle(fontFamily: 'Raleway'),
+                        ),
                       ),
                       PopupMenuItem(
                         value: 4,
-                        child: Text('4', style: TextStyle(fontFamily: 'Raleway'),),
+                        child: Text(
+                          '4',
+                          style: TextStyle(fontFamily: 'Raleway'),
+                        ),
                       ),
                     ],
-                    child: Padding(
+                    /*child: Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.grid_view, color: Colors.pink,),
+                    ),*/
+                    icon: Icon(
+                      Icons.grid_view,
+                      size: 30,
+                      color: Colors.pink,
                     ),
                   ),
                 ],
@@ -396,10 +488,9 @@ class _RecentImagesState extends State<RecentImages> {
                       )
                     : GridView.builder(
                         controller: _scrollController,
-                        gridDelegate:
-                            SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: _crossAxisCount,
-                          childAspectRatio: 1,
+                          childAspectRatio: 2/3,
                         ),
                         itemCount: _images.length,
                         itemBuilder: (context, index) {
@@ -514,8 +605,10 @@ class ImageViewer extends StatelessWidget {
                   if (result != null) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                          content:
-                              Text('Изображение успешно сохранено в галерею'), backgroundColor: Colors.green,),
+                        content:
+                            Text('Изображение успешно сохранено в галерею'),
+                        backgroundColor: Colors.green,
+                      ),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -525,8 +618,9 @@ class ImageViewer extends StatelessWidget {
 
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                        content:
-                            Text('Изображение успешно сохранено в галерею'), backgroundColor: Colors.green,),
+                      content: Text('Изображение успешно сохранено в галерею'),
+                      backgroundColor: Colors.green,
+                    ),
                   );
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
