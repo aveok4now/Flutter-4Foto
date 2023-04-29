@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food/hidden_drawer.dart';
 import 'package:food/settings_page.dart';
+import 'package:vibration/vibration.dart';
 
 class TermsOfUsePage extends StatefulWidget {
   const TermsOfUsePage({Key? key}) : super(key: key);
@@ -19,6 +20,7 @@ class _TermsOfUsePageState extends State<TermsOfUsePage> {
         leading: IconButton(
     icon: Icon(Icons.arrow_back),
     onPressed: () {
+      Vibration.vibrate(duration: 50, amplitude: 18);
   Navigator.of(context).pushReplacement(MaterialPageRoute(
     builder: (BuildContext context) => const SettingsPage(),
   )).then((_) {
