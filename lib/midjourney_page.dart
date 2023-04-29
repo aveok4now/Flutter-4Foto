@@ -404,6 +404,7 @@ void dispose() {
                         ),
                       )
                     : GridView.builder(
+                      physics: BouncingScrollPhysics(),
                       shrinkWrap: true,
                         controller: _scrollController,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -757,18 +758,7 @@ class ImageViewer extends StatelessWidget {
                         backgroundColor: Colors.green,
                       ),
                     );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Ошибка сохранения изображения')),
-                    );
-                  }
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Изображение успешно сохранено в галерею'),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
+                  } 
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Ошибка сохранения изображения')),
