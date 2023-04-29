@@ -146,6 +146,7 @@ class _TopImagesState extends State<TopImages> {
   int _selectedCount = 2;
   bool _showFloatingButton = false;
 
+
   @override
   void initState() {
     super.initState();
@@ -175,7 +176,7 @@ void dispose() {
     }
   }
 
-  Future<void> _checkInternetConnection(BuildContext context) async {
+ /* Future<void> _checkInternetConnection(BuildContext context) async {
     var connectivityResult = await Connectivity().checkConnectivity();
     _showNoInet = true;
     if (connectivityResult == ConnectivityResult.none) {
@@ -250,8 +251,55 @@ void dispose() {
         }
       }
       _fetchImages();
+    
     }
-  }
+  }*/
+
+
+ Future<void> _checkInternetConnection(BuildContext context) async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    _showNoInet = true;
+    if (connectivityResult == ConnectivityResult.none) {
+   ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      width: double.infinity,
+      content: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          'Отсутствует подключение к интернету. Проверьте подключение и попробуйте ещё раз.',
+          
+          textAlign: TextAlign.start,
+          style: TextStyle(
+            fontFamily: 'Raleway',
+            fontSize: 16.0,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      showCloseIcon: true,
+      closeIconColor: Colors.pink,
+      backgroundColor: Colors.deepPurple,
+      duration: Duration(days: 365),
+      behavior: SnackBarBehavior.floating,
+      action: SnackBarAction(
+        label: 'Повторить попытку',
+        textColor: Colors.pink,
+        onPressed: () {
+          _checkInternetConnection(context);
+        },
+      ),
+    ),
+  );
+    }else {
+      // Internet connectivity available
+      _fetchImages();
+    
+    }
+ }
+
+
+
+
 
  void _onScroll() {
     if (_scrollController.position.pixels ==
@@ -356,6 +404,7 @@ void dispose() {
                         ),
                       )
                     : GridView.builder(
+                      shrinkWrap: true,
                         controller: _scrollController,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: _crossAxisCount,
@@ -659,7 +708,7 @@ class ImageViewer extends StatelessWidget {
               initialIndex >= 0 &&
               initialIndex < imageUrls.length)
             IconButton(
-              icon: Icon(Icons.share),
+              icon: Icon(Icons.ios_share),
               onPressed: () async {
                 try {
                   var response =
@@ -730,6 +779,8 @@ class ImageViewer extends StatelessWidget {
         ],
       ),
       body: SafeArea(
+        maintainBottomViewPadding: false,
+        bottom: false,
         child: Container(
           child: Stack(
             children: [
@@ -773,8 +824,8 @@ class ImageViewer extends StatelessWidget {
                 right: 20,
                 left: 20,
                 child: CupertinoButton(
-                  //padding: EdgeInsets.zero,
-                  minSize: 40,
+                  padding: EdgeInsets.all(17.0),
+                 // minSize: 40,
                   borderRadius: BorderRadius.all(Radius.circular(22.0)),
                   alignment: Alignment.center,
                   color: Colors.white,
@@ -799,17 +850,20 @@ class ImageViewer extends StatelessWidget {
                     );
                   },
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.edit,
-                        color: Colors.purple[300],
-                      ),
-                      SizedBox(width: 15),
+                     // Icon(
+                      //  Icons.edit,
+                    //    color: Colors.purple[300],
+                    //  ),
+                     SizedBox(width: 70),
                       Text(
                         'Редактировать фото',
                         style: TextStyle(
                           color: Colors.purple[300],
+                          
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
