@@ -152,7 +152,15 @@ class _TopImagesState extends State<TopImages> {
     _fetchImages();
     _checkInternetConnection(context);
     _scrollController.addListener(_onScroll);
+
   }
+
+@override
+void dispose() {
+  _scrollController.removeListener(_onScroll);
+
+  super.dispose();
+}
 
   void _scrollListener() {
     if (_scrollController.position.pixels ==
