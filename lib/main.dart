@@ -169,23 +169,24 @@ Future<bool> _onBackPressed(BuildContext context) async {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
+        shadowColor: Colors.cyan,
         title: Row(
           children: [
-            Icon(Icons.power_settings_new, color: Colors.red),
+            Icon(Icons.power_settings_new, color: Colors.pink),
             SizedBox(width: 8),
-            Text('Уже уходите?', style: TextStyle(fontSize: 18)),
+            Text('Уже уходите?', style: TextStyle(fontSize: 18, fontFamily: 'Raleway', fontWeight: FontWeight.bold),),
           ],
         ),
-        content: Text('Вы уверены, что хотите выйти?'),
+        content: Text('Вы уверены, что хотите выйти?', style: TextStyle(fontFamily: 'Raleway', fontWeight: FontWeight.w500),),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Остаться', style: TextStyle(color: Colors.grey)),
+            child: Text('Остаться', style: TextStyle(color: Colors.grey, fontFamily: 'Raleway')),
           ),
           CupertinoButton(
             onPressed: () => Navigator.pop(context, true),
             color: Colors.deepPurple,
-            child: Text('Да', style: TextStyle(color: Colors.white)),
+            child: Text('Да', style: TextStyle(color: Colors.white, fontFamily: 'Raleway')),
           ),
         ],
       );
