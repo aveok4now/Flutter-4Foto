@@ -102,8 +102,19 @@ class _SettingsPageState extends State<SettingsPage> {
                     SizedBox(height: 16),
                     CupertinoButton.filled(
                       onPressed: () {
+                         
                         Vibration.vibrate(duration: 50, amplitude: 18);
                         _sendEmail();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'Спасибо, что помогаете нам стать лучше!'),
+                                  backgroundColor: Colors.green,
+                                  duration: Duration(seconds: 3),
+                                  behavior: SnackBarBehavior.floating,
+                                  dismissDirection: DismissDirection.up,
+                                ),
+                              );
                       },
                       child: Text('Отправить'),
                     ),
