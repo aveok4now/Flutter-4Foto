@@ -123,6 +123,9 @@ class _EditedImageScreenState extends State<EditedImageScreen> {
                                   content: Text(
                                       'Изображение успешно сохранено в галерею'),
                                   backgroundColor: Colors.green,
+                                  duration: Duration(seconds: 1),
+                                  behavior: SnackBarBehavior.floating,
+                                  dismissDirection: DismissDirection.up,
                                 ),
                               );
                             }
@@ -130,6 +133,10 @@ class _EditedImageScreenState extends State<EditedImageScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('Ошибка сохранения изображения'),
+                                backgroundColor: Colors.transparent,
+                                duration: Duration(seconds: 1),
+                                behavior: SnackBarBehavior.floating,
+                                dismissDirection: DismissDirection.up,
                               ),
                             );
                           }
