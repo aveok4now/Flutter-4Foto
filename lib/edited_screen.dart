@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:vibration/vibration.dart';
@@ -90,13 +91,6 @@ class _EditedImageScreenState extends State<EditedImageScreen> {
                                 '${temp.path}/4Editor_AI_$timestamp.jpg';
                             File(path).writeAsBytesSync(bytes);
                             await Share.shareFiles([path]);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                    'Изображение успешно сохранено в галерею'),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
                           } catch (e) {
                             print('Error sharing image: $e');
                           }
@@ -112,17 +106,32 @@ class _EditedImageScreenState extends State<EditedImageScreen> {
                           ],
                         ),
                         onPressed: () async {
+                          Vibration.vibrate(duration: 40, amplitude: 9);
                           try {
-                            Vibration.vibrate(duration: 40, amplitude: 9);
-                            final bytes = await widget.imageFile.readAsBytes();
-                            final temp = await getDownloadsDirectory();
+                            final tempDir = await getTemporaryDirectory();
                             final timestamp =
                                 DateTime.now().millisecondsSinceEpoch;
-                            final path =
-                                '${temp?.path}/4Editor_AI_$timestamp.jpg';
-                            File(path).writeAsBytesSync(bytes);
+                            final imagePath =
+                                '${tempDir.path}/4Editor_AI_$timestamp.jpg';
+                            await widget.imageFile.copy(imagePath);
+                            final result = await GallerySaver.saveImage(
+                                imagePath,
+                                albumName: '4Editor');
+                            if (result != null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'Изображение успешно сохранено в галерею'),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                            }
                           } catch (e) {
-                            print('Error saving image: $e');
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Ошибка сохранения изображения'),
+                              ),
+                            );
                           }
                         },
                       ),
@@ -138,7 +147,7 @@ class _EditedImageScreenState extends State<EditedImageScreen> {
                 children: [
                   IconButton(
                     icon: Icon(
-                      Icons.arrow_forward,
+                      Icons.arrow_forward_ios,
                     ),
                     onPressed: () {
                       Vibration.vibrate(duration: 40, amplitude: 9);
