@@ -4,6 +4,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/services.dart';
 import 'package:food/colors.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vibration/vibration.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'dart:async';
@@ -203,6 +204,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                                     ? TextStyle(color: Colors.white)
                                     : TextStyle(color: Colors.white)),
                             onLongPress: () {
+                              Vibration.vibrate(duration: 40, amplitude: 9);
                               Clipboard.setData(ClipboardData(text: message));
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -243,6 +245,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                     child: IconButton(
                       icon: Icon(Icons.close, color: Colors.white),
                       onPressed: () {
+                        Vibration.vibrate(duration: 40, amplitude: 9);
                         setState(() {
                           showVideo1 = false;
                         });
@@ -274,6 +277,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                     child: IconButton(
                       icon: Icon(Icons.close, color: Colors.white),
                       onPressed: () {
+                        Vibration.vibrate(duration: 40, amplitude: 9);
                         setState(() {
                           showVideo2 = false;
                         });
@@ -305,6 +309,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                     child: IconButton(
                       icon: Icon(Icons.close, color: Colors.white),
                       onPressed: () {
+                        Vibration.vibrate(duration: 40, amplitude: 9);
                         setState(() {
                           showVideo3 = false;
                         });
@@ -336,6 +341,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                     child: IconButton(
                       icon: Icon(Icons.close, color: Colors.white),
                       onPressed: () {
+                        Vibration.vibrate(duration: 40, amplitude: 9);
                         setState(() {
                           showVideo4 = false;
                         });
@@ -361,7 +367,10 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                 ),
                 const SizedBox(width: 8.0),
                 CupertinoButton(
-                  onPressed: () => _showResponse(_controller.text),
+                  onPressed: () {
+                    Vibration.vibrate(duration: 40, amplitude: 9);
+                     _showResponse(_controller.text);
+                  },
                   child: Icon(Icons.send_sharp),
                 ),
               ],

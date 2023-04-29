@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:vibration/vibration.dart';
 
 import 'main.dart';
 
@@ -28,9 +29,6 @@ class _EditedImageScreenState extends State<EditedImageScreen> {
           Navigator.of(context).pop();
         }
       },
-      
-     
-
       child: Tooltip(
         message: "Свайпните вправо, чтобы вернуться",
         child: Scaffold(
@@ -45,7 +43,6 @@ class _EditedImageScreenState extends State<EditedImageScreen> {
                 ],
               ),
             ),
-            
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -68,9 +65,7 @@ class _EditedImageScreenState extends State<EditedImageScreen> {
                     ),
                   ),
                 ),
-         
                 Padding(
-                  
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,6 +81,7 @@ class _EditedImageScreenState extends State<EditedImageScreen> {
                         ),
                         onPressed: () async {
                           try {
+                            Vibration.vibrate(duration: 40, amplitude: 9);
                             final bytes = await widget.imageFile.readAsBytes();
                             final temp = await getTemporaryDirectory();
                             final timestamp =
@@ -117,6 +113,7 @@ class _EditedImageScreenState extends State<EditedImageScreen> {
                         ),
                         onPressed: () async {
                           try {
+                            Vibration.vibrate(duration: 40, amplitude: 9);
                             final bytes = await widget.imageFile.readAsBytes();
                             final temp = await getDownloadsDirectory();
                             final timestamp =
@@ -144,26 +141,20 @@ class _EditedImageScreenState extends State<EditedImageScreen> {
                       Icons.arrow_forward,
                     ),
                     onPressed: () {
+                      Vibration.vibrate(duration: 40, amplitude: 9);
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (_) => EditorScreen(),
                         ),
-                        
                       );
                     },
-                    
                   ),
-                  
                 ],
               ),
-              
             ],
           ),
-          
         ),
-        
       ),
-      
     );
   }
 }

@@ -60,7 +60,7 @@ class _IntroductionState extends State<Introduction> {
             children: [
               GestureDetector(
                 onTap: (){
-                   Vibration.vibrate(duration: 50, amplitude: 18);
+                   Vibration.vibrate(duration: 40, amplitude: 9);
                   _controller.jumpToPage(2);
                 },
                 child: Text('Проп.'),
@@ -70,7 +70,7 @@ class _IntroductionState extends State<Introduction> {
           onLastPage
           ? GestureDetector(
                 onTap: (){
-                  Vibration.vibrate(duration: 50, amplitude: 25);
+                  Vibration.vibrate(duration: 40, amplitude: 9);
                   Navigator.push(context, 
                   MaterialPageRoute(builder: (context){
                       //return HomeScreen(animation: _animation);
@@ -81,7 +81,7 @@ class _IntroductionState extends State<Introduction> {
                 )
           : GestureDetector(
                 onTap: (){
-                  Vibration.vibrate(duration: 50, amplitude: 18);
+                  Vibration.vibrate(duration: 40, amplitude: 9);
                   _controller.nextPage(
                     duration: Duration(milliseconds: 500), 
                     curve: Curves.easeIn,

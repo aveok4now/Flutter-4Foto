@@ -15,6 +15,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:vibration/vibration.dart';
 import 'image_screen.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -74,7 +75,9 @@ class _JourneyState extends State<JourneyPage> {
           controller.animateToPage(
             index,
             duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
+            curve: Curves.decelerate,
+            //curve: Curves.easeIn
+            //curve: Curves.easeInCirc,
           );
         },
         activeColor: Colors.pink,
@@ -146,22 +149,20 @@ class _TopImagesState extends State<TopImages> {
   int _selectedCount = 2;
   bool _showFloatingButton = false;
 
-
   @override
   void initState() {
     super.initState();
     _fetchImages();
     _checkInternetConnection(context);
     _scrollController.addListener(_onScroll);
-
   }
 
-@override
-void dispose() {
-  _scrollController.removeListener(_onScroll);
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
 
-  super.dispose();
-}
+    super.dispose();
+  }
 
   void _scrollListener() {
     if (_scrollController.position.pixels ==
@@ -176,7 +177,7 @@ void dispose() {
     }
   }
 
- /* Future<void> _checkInternetConnection(BuildContext context) async {
+  /* Future<void> _checkInternetConnection(BuildContext context) async {
     var connectivityResult = await Connectivity().checkConnectivity();
     _showNoInet = true;
     if (connectivityResult == ConnectivityResult.none) {
@@ -255,66 +256,60 @@ void dispose() {
     }
   }*/
 
-
- Future<void> _checkInternetConnection(BuildContext context) async {
+  Future<void> _checkInternetConnection(BuildContext context) async {
     var connectivityResult = await Connectivity().checkConnectivity();
     _showNoInet = true;
     if (connectivityResult == ConnectivityResult.none) {
-   ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      width: double.infinity,
-      content: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          'Отсутствует подключение к интернету. Проверьте подключение и попробуйте ещё раз.',
-          
-          textAlign: TextAlign.start,
-          style: TextStyle(
-            fontFamily: 'Raleway',
-            fontSize: 16.0,
-            color: Colors.white,
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          width: double.infinity,
+          content: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Отсутствует подключение к интернету. Проверьте подключение и попробуйте ещё раз.',
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                fontFamily: 'Raleway',
+                fontSize: 16.0,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          showCloseIcon: true,
+          closeIconColor: Colors.pink,
+          backgroundColor: Colors.deepPurple,
+          duration: Duration(days: 365),
+          behavior: SnackBarBehavior.floating,
+          action: SnackBarAction(
+            label: 'Повторить попытку',
+            textColor: Colors.pink,
+            onPressed: () {
+              Vibration.vibrate(duration: 50, amplitude: 18);
+              _checkInternetConnection(context);
+            },
           ),
         ),
-      ),
-      showCloseIcon: true,
-      closeIconColor: Colors.pink,
-      backgroundColor: Colors.deepPurple,
-      duration: Duration(days: 365),
-      behavior: SnackBarBehavior.floating,
-      action: SnackBarAction(
-        label: 'Повторить попытку',
-        textColor: Colors.pink,
-        onPressed: () {
-          _checkInternetConnection(context);
-        },
-      ),
-    ),
-  );
-    }else {
+      );
+    } else {
       // Internet connectivity available
       _fetchImages();
-    
     }
- }
+  }
 
-
-
-
-
- void _onScroll() {
+  void _onScroll() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       _fetchImages();
     }
-     if (_scrollController.offset > 100) {
-    setState(() {
-      _showFloatingButton = true;
-    });
-  } else {
-    setState(() {
-      _showFloatingButton = false;
-    });
-  }
+    if (_scrollController.offset > 100) {
+      setState(() {
+        _showFloatingButton = true;
+      });
+    } else {
+      setState(() {
+        _showFloatingButton = false;
+      });
+    }
   }
 
   Future<void> _fetchImages() async {
@@ -404,8 +399,8 @@ void dispose() {
                         ),
                       )
                     : GridView.builder(
-                      physics: BouncingScrollPhysics(),
-                      shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        shrinkWrap: true,
                         controller: _scrollController,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: _crossAxisCount,
@@ -444,8 +439,11 @@ void dispose() {
           bottom: 16,
           right: 16,
           child: FloatingActionButton(
-            onPressed: _shuffleImages,
-            child: Icon(Icons.shuffle),
+            onPressed: () {
+              Vibration.vibrate(duration: 50, amplitude: 14);
+              _shuffleImages();
+            },
+            child: Icon(Icons.shuffle_outlined),
           ),
         ),
         Positioned(
@@ -455,6 +453,7 @@ void dispose() {
             visible: _showFloatingButton,
             child: FloatingActionButton(
               onPressed: () {
+                Vibration.vibrate(duration: 50, amplitude: 5);
                 _scrollController.animateTo(0,
                     duration: Duration(milliseconds: 500),
                     curve: Curves.linear);
@@ -510,15 +509,15 @@ class _RecentImagesState extends State<RecentImages> {
         _scrollController.position.maxScrollExtent) {
       _fetchRecentImages();
     }
-     if (_scrollController.offset > 100) {
-    setState(() {
-      _showFloatingButton = true;
-    });
-  } else {
-    setState(() {
-      _showFloatingButton = false;
-    });
-  }
+    if (_scrollController.offset > 100) {
+      setState(() {
+        _showFloatingButton = true;
+      });
+    } else {
+      setState(() {
+        _showFloatingButton = false;
+      });
+    }
   }
 
   void _changeCrossAxisCount(int value) {
@@ -614,7 +613,7 @@ class _RecentImagesState extends State<RecentImages> {
                         ),
                       )
                     : GridView.builder(
-                      physics: BouncingScrollPhysics(),
+                        physics: BouncingScrollPhysics(),
                         controller: _scrollController,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: _crossAxisCount,
@@ -625,6 +624,7 @@ class _RecentImagesState extends State<RecentImages> {
                           String imageUrl = _images[index];
                           return GestureDetector(
                             onTap: () {
+                              Vibration.vibrate(duration: 20, amplitude: 9);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -659,8 +659,11 @@ class _RecentImagesState extends State<RecentImages> {
           bottom: 16,
           right: 16,
           child: FloatingActionButton(
-            onPressed: _shuffleImages,
-            child: Icon(Icons.shuffle),
+            onPressed: () {
+              Vibration.vibrate(duration: 50, amplitude: 14);
+              _shuffleImages();
+            },
+            child: Icon(Icons.shuffle_outlined),
           ),
         ),
         Positioned(
@@ -670,6 +673,7 @@ class _RecentImagesState extends State<RecentImages> {
             visible: _showFloatingButton,
             child: FloatingActionButton(
               onPressed: () {
+                Vibration.vibrate(duration: 50, amplitude: 5);
                 _scrollController.animateTo(0,
                     duration: Duration(milliseconds: 500),
                     curve: Curves.linear);
@@ -712,6 +716,7 @@ class ImageViewer extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.ios_share),
               onPressed: () async {
+                Vibration.vibrate(duration: 40, amplitude: 9);
                 try {
                   var response =
                       await http.get(Uri.parse(imageUrls[initialIndex]));
@@ -734,6 +739,7 @@ class ImageViewer extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.download),
               onPressed: () async {
+                Vibration.vibrate(duration: 40, amplitude: 9);
                 try {
                   print(initialIndex);
                   var response =
@@ -759,7 +765,7 @@ class ImageViewer extends StatelessWidget {
                         backgroundColor: Colors.green,
                       ),
                     );
-                  } 
+                  }
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Ошибка сохранения изображения')),
@@ -786,6 +792,7 @@ class ImageViewer extends StatelessWidget {
                   );
                 },
                 onPageChanged: (index) {
+                  Vibration.vibrate(duration: 40, amplitude: 9);
                   initialIndex = index;
                   print("index");
                   print(index);
@@ -816,11 +823,12 @@ class ImageViewer extends StatelessWidget {
                 left: 20,
                 child: CupertinoButton(
                   padding: EdgeInsets.all(17.0),
-                 // minSize: 40,
+                  // minSize: 40,
                   borderRadius: BorderRadius.all(Radius.circular(22.0)),
                   alignment: Alignment.center,
                   color: Colors.white,
                   onPressed: () async {
+                    Vibration.vibrate(duration: 40, amplitude: 9);
                     final currentContext = context;
                     var response =
                         await http.get(Uri.parse(imageUrls[initialIndex]));
@@ -843,16 +851,15 @@ class ImageViewer extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                     // Icon(
+                      // Icon(
                       //  Icons.edit,
-                    //    color: Colors.purple[300],
-                    //  ),
-                     SizedBox(width: 70),
+                      //    color: Colors.purple[300],
+                      //  ),
+                      SizedBox(width: 70),
                       Text(
                         'Редактировать фото',
                         style: TextStyle(
                           color: Colors.purple[300],
-                          
                         ),
                         textAlign: TextAlign.center,
                       ),

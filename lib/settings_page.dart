@@ -5,6 +5,7 @@ import 'package:food/hidden_drawer.dart';
 import 'package:food/politics.dart';
 import 'package:food/terms.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:vibration/vibration.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -46,6 +47,7 @@ class _SettingsPageState extends State<SettingsPage> {
           leading: IconButton(
             icon: Icon(Icons.home),
             onPressed: () {
+              Vibration.vibrate(duration: 50, amplitude: 18);
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) => HiddenDrawer(),
@@ -99,7 +101,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     SizedBox(height: 16),
                     CupertinoButton.filled(
-                      onPressed: _sendEmail,
+                      onPressed: () {
+                        Vibration.vibrate(duration: 50, amplitude: 18);
+                        _sendEmail();
+                      },
                       child: Text('Отправить'),
                     ),
                     SizedBox(height: 16),
@@ -108,6 +113,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       title: const Text('Политика конфиденциальности',
                           style: TextStyle(color: Colors.white)),
                       onTap: () {
+                        Vibration.vibrate(duration: 40, amplitude: 10);
                         Navigator.of(context).pop();
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (BuildContext context) =>
@@ -119,6 +125,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       title: const Text('Условия использования',
                           style: TextStyle(color: Colors.white)),
                       onTap: () {
+                        Vibration.vibrate(duration: 50, amplitude: 18);
                         Navigator.of(context).pop();
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (BuildContext context) =>

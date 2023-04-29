@@ -13,6 +13,7 @@ import 'package:image/image.dart' as imageLib;
 //import 'filters.dart';
 import 'dart:async';
 import 'package:text_editor/text_editor.dart';
+import 'package:vibration/vibration.dart';
 import 'edited_screen.dart';
 import 'package:image/image.dart' as img;
 
@@ -209,7 +210,10 @@ class _ImageScreenState extends State<ImageScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.cancel),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            Vibration.vibrate(duration: 40, amplitude: 9);
+             Navigator.of(context).pop();
+          },
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -317,6 +321,7 @@ class _ImageScreenState extends State<ImageScreen> {
               ],
               currentIndex: _selectedIndex,
               onTap: (index) {
+                Vibration.vibrate(duration: 40, amplitude: 9);
                 setState(() {
                   _selectedIndex = index;
                 });

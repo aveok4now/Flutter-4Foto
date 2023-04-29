@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:food/colors.dart';
 import 'package:gallery_saver/files.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vibration/vibration.dart';
 import 'hidden_drawer.dart';
 import 'image_screen.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
@@ -97,7 +98,7 @@ void main() async {
       );
     }
   });
-   Stream.periodic(Duration(days: 1)).listen((_) async {
+  Stream.periodic(Duration(days: 1)).listen((_) async {
     if (DateTime.now().millisecondsSinceEpoch >=
         lastVisit + Duration(days: 1).inMilliseconds) {
       await flutterLocalNotificationsPlugin.show(
@@ -116,9 +117,7 @@ void main() async {
     }
   });
 
-
-  runApp(
-    DevicePreview(builder: (context) => MyApp()));
+  runApp(DevicePreview(builder: (context) => MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -146,7 +145,12 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: Stack(
-          children: [Introduction(), HomeScreen(animation: _animation), HiddenDrawer(), Introduction()],
+          children: [
+            Introduction(),
+            HomeScreen(animation: _animation),
+            HiddenDrawer(),
+            Introduction()
+          ],
         ),
       ),
     );
@@ -188,13 +192,12 @@ Future<bool> _onBackPressed(BuildContext context) async {
     },
   );
 
-  if(exitApp != null && exitApp){
+  if (exitApp != null && exitApp) {
     SystemNavigator.pop();
   }
 
   return exitApp ?? false;
 }
-
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key, required this.animation}) : super(key: key);
@@ -218,7 +221,7 @@ class HomeScreen extends StatelessWidget {
                     animation.value!,
                   ],
                   radius: 3,
-              center: Alignment.center,
+                  center: Alignment.center,
                 ),
               ),
               child: Stack(
@@ -257,7 +260,7 @@ class HomeScreen extends StatelessWidget {
                           speed: Duration(milliseconds: 100),
                           pause: Duration(milliseconds: 5000),
                           text: [
-                            'Всё, что тебя вдохновляет - здесь',
+                            'Всё, что тебя вдохновляет — здесь',
                           ],
                           textStyle: const TextStyle(
                             fontFamily: 'Raleway',
@@ -272,12 +275,13 @@ class HomeScreen extends StatelessWidget {
                           margin: EdgeInsets.only(top: 18),
                           child: CupertinoButton(
                             onPressed: () {
+                              Vibration.vibrate(duration: 40, amplitude: 9);
                               Navigator.push(
                                 context,
                                 PageRouteBuilder(
-                                  pageBuilder:
-                                      (context, animation, secondaryAnimation) =>
-                                          const EditorScreen(),
+                                  pageBuilder: (context, animation,
+                                          secondaryAnimation) =>
+                                      const EditorScreen(),
                                   transitionsBuilder: (context, animation,
                                       secondaryAnimation, child) {
                                     return FadeTransition(
@@ -290,7 +294,6 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               );
                             },
-                            
                             color: CupertinoColors.activeBlue,
                             borderRadius: BorderRadius.circular(32),
                             padding: const EdgeInsets.symmetric(
@@ -300,9 +303,10 @@ class HomeScreen extends StatelessWidget {
                             child: Text(
                               'Начать',
                               style: TextStyle(
-                                  fontSize: 18,
-                                  color: CupertinoColors.white,
-                                  /*fontFamily: 'Ubuntu'*/),
+                                fontSize: 18,
+                                color: CupertinoColors
+                                    .white, /*fontFamily: 'Ubuntu'*/
+                              ),
                             ),
                           ),
                         ),
@@ -370,7 +374,6 @@ class _EditorScreenState extends State<EditorScreen> {
       print("Enter something");
     }
   }
-  
 
   void _animateColors() async {
     while (true) {
@@ -398,105 +401,107 @@ class _EditorScreenState extends State<EditorScreen> {
     });
   }
 
- @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: CupertinoNavigationBar(
-      backgroundColor: Colors.deepPurple,
-      automaticallyImplyLeading: false,
-      leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
-    ),
-    body: AnimatedContainer(
-      duration: Duration(milliseconds: 500),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: _colors,
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CupertinoNavigationBar(
+        backgroundColor: Colors.deepPurple,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: Opacity(
-              opacity: 0.5,
-              child: Image.asset(
-                'assets/carti2.jpg',
-                fit: BoxFit.cover,
+      body: AnimatedContainer(
+        duration: Duration(milliseconds: 500),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: _colors,
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+          ),
+        ),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Opacity(
+                opacity: 0.5,
+                child: Image.asset(
+                  'assets/carti2.jpg',
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CupertinoButton(
-                  onPressed: () async {
-                    final pickedFile = await ImagePicker().pickImage(
-                      source: ImageSource.gallery,
-                    );
-                    if (pickedFile != null) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ImageScreen(imagePath: pickedFile.path),
-                        ),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CupertinoButton(
+                    onPressed: () async {
+                      Vibration.vibrate(duration: 40, amplitude: 9);
+                      final pickedFile = await ImagePicker().pickImage(
+                        source: ImageSource.gallery,
                       );
-                    }
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.image,
-                      ),
-                      SizedBox(width: 8),
-                      Text('Выбрать фото'),
-                    ],
-                  ),
-                  color: Colors.deepPurple,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  borderRadius: BorderRadius.circular(32),
-                ),
-                const SizedBox(height: 16),
-                CupertinoButton(
-                  onPressed: () async {
-                    final pickedFile = await ImagePicker().pickImage(
-                      source: ImageSource.camera,
-                    );
-                    if (pickedFile != null) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ImageScreen(imagePath: pickedFile.path),
+                      if (pickedFile != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ImageScreen(imagePath: pickedFile.path),
+                          ),
+                        );
+                      }
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.image,
                         ),
-                      );
-                    }
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.camera_alt),
-                      SizedBox(width: 8),
-                      Text('Сделать фото'),
-                    ],
+                        SizedBox(width: 8),
+                        Text('Выбрать фото'),
+                      ],
+                    ),
+                    color: Colors.deepPurple,
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    borderRadius: BorderRadius.circular(32),
                   ),
-                  color: Colors.deepPurple,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  borderRadius: BorderRadius.circular(32),
-                ),
-                const SizedBox(height: 16),
-             /* ElevatedButton.icon(
+                  const SizedBox(height: 16),
+                  CupertinoButton(
+                    onPressed: () async {
+                      Vibration.vibrate(duration: 40, amplitude: 9);
+                      final pickedFile = await ImagePicker().pickImage(
+                        source: ImageSource.camera,
+                      );
+                      if (pickedFile != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ImageScreen(imagePath: pickedFile.path),
+                          ),
+                        );
+                      }
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.camera_alt),
+                        SizedBox(width: 8),
+                        Text('Сделать фото'),
+                      ],
+                    ),
+                    color: Colors.deepPurple,
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    borderRadius: BorderRadius.circular(32),
+                  ),
+                  const SizedBox(height: 16),
+                  /* ElevatedButton.icon(
                   icon: const Icon(Icons.memory),
                   label: const Text('Генерация фото с ИИ'),
                   onPressed: () {
@@ -624,14 +629,14 @@ Widget build(BuildContext context) {
                       ),
                     );
                   })*/
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 }
 
 /*const SizedBox(height: 16),
