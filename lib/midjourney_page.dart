@@ -297,11 +297,13 @@ class _TopImagesState extends State<TopImages> {
   }
 
   void _onScroll() {
+    print(_scrollController.offset);
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       _fetchImages();
     }
-    if (_scrollController.offset > 100) {
+    if (_scrollController.offset > 400) {
+      
       setState(() {
         _showFloatingButton = true;
       });
