@@ -614,6 +614,7 @@ class _RecentImagesState extends State<RecentImages> {
                         ),
                       )
                     : GridView.builder(
+                      physics: BouncingScrollPhysics(),
                         controller: _scrollController,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: _crossAxisCount,
