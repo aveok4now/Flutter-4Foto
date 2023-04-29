@@ -5,6 +5,7 @@ import 'package:food/intro_screens.dart/intro_page1.dart';
 import 'package:food/main.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'intro_screens.dart/inro_page2.dart';
+import 'package:vibration/vibration.dart';
 
 class Introduction extends StatefulWidget {
   const Introduction({super.key});
@@ -59,6 +60,7 @@ class _IntroductionState extends State<Introduction> {
             children: [
               GestureDetector(
                 onTap: (){
+                   Vibration.vibrate(duration: 50, amplitude: 18);
                   _controller.jumpToPage(2);
                 },
                 child: Text('Проп.'),
@@ -68,6 +70,7 @@ class _IntroductionState extends State<Introduction> {
           onLastPage
           ? GestureDetector(
                 onTap: (){
+                  Vibration.vibrate(duration: 50, amplitude: 25);
                   Navigator.push(context, 
                   MaterialPageRoute(builder: (context){
                       //return HomeScreen(animation: _animation);
@@ -78,6 +81,7 @@ class _IntroductionState extends State<Introduction> {
                 )
           : GestureDetector(
                 onTap: (){
+                  Vibration.vibrate(duration: 50, amplitude: 18);
                   _controller.nextPage(
                     duration: Duration(milliseconds: 500), 
                     curve: Curves.easeIn,
