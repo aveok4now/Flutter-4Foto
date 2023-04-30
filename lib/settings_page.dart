@@ -45,7 +45,10 @@ class _SettingsPageState extends State<SettingsPage> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.home),
+            icon: Icon(
+              Icons.home,
+              color: Colors.white,
+            ),
             onPressed: () {
               Vibration.vibrate(duration: 50, amplitude: 18);
               Navigator.of(context).push(
@@ -57,127 +60,137 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ),
         backgroundColor: Colors.deepPurple[300],
+        resizeToAvoidBottomInset: false,
         body: Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(height: 18),
-              Text(
-                '4Editor создан для улучшения фотографий. Следите за тем, что сегодня предлагает искусственный интеллект, делитесь, сохраняйте и редактируйте изображения.',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+          child: Expanded(
+            child: Column(
+              children: [
+                SizedBox(height: 18),
+                Text(
+                  '4Editor создан для улучшения фотографий. Следите за тем, что сегодня предлагает искусственный интеллект, делитесь, сохраняйте и редактируйте изображения.',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.justify,
                 ),
-                textAlign: TextAlign.justify,
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Спросите у чат-бота, что необходимо для создания крутых фотографий!',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.amber,
+                SizedBox(height: 16),
+                Text(
+                  'Спросите у чат-бота, что необходимо для создания крутых фотографий!',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.amber,
+                  ),
+                  textAlign: TextAlign.justify,
                 ),
-                textAlign: TextAlign.justify,
-              ),
-              SizedBox(height: 16),
-              Flexible(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SingleChildScrollView(
-                      child: TextField(
-                        controller: _messageController,
-                        decoration: InputDecoration(
-                          hintText:
-                              'Опишите проблему, с которой вы столкнулись',
+                SizedBox(height: 16),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        TextField(
+                          controller: _messageController,
+                          decoration: InputDecoration(
+                            hintText:
+                                'Опишите проблему, с которой вы столкнулись',
+                          ),
+                          maxLines: null,
                         ),
-                        maxLines: null,
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    CupertinoButton.filled(
-                      onPressed: () {
-                         
-                        Vibration.vibrate(duration: 50, amplitude: 18);
-                        _sendEmail();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                      'Спасибо, что помогаете нам стать лучше!'),
-                                  backgroundColor: Colors.green,
-                                  duration: Duration(seconds: 3),
-                                  behavior: SnackBarBehavior.floating,
-                                  dismissDirection: DismissDirection.up,
-                                ),
-                              );
-                      },
-                      child: Text('Отправить'),
-                    ),
-                    SizedBox(height: 16),
-                    ListTile(
-                      leading: const Icon(Icons.description),
-                      title: const Text('Политика конфиденциальности',
-                          style: TextStyle(color: Colors.white)),
-                      onTap: () {
-                        Vibration.vibrate(duration: 40, amplitude: 10);
-                        Navigator.of(context).pop();
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                const TermsOfUsePage()));
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.description),
-                      title: const Text('Условия использования',
-                          style: TextStyle(color: Colors.white)),
-                      onTap: () {
-                        Vibration.vibrate(duration: 50, amplitude: 18);
-                        Navigator.of(context).pop();
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                const PoliticsPage()));
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: Container(
-                  height: 80,
-                  child: Column(
-                    children: [
-                      Spacer(),
-                      Text(
-                        'Проект был выполнен в рамках конкурса "IT-Планета"',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontFamily: 'Raleway',
+                        SizedBox(height: 16),
+                        CupertinoButton.filled(
+                          onPressed: () {
+                            Vibration.vibrate(duration: 50, amplitude: 18);
+                            _sendEmail();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Спасибо, что помогаете нам стать лучше!'),
+                                backgroundColor: Colors.green,
+                                duration: Duration(seconds: 3),
+                                behavior: SnackBarBehavior.floating,
+                                dismissDirection: DismissDirection.up,
+                              ),
+                            );
+                          },
+                          child: Text('Отправить'),
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        '4Editor v.1.0',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white.withOpacity(0.5),
+                        SizedBox(height: 16),
+                        ListTile(
+                          leading: const Icon(
+                            Icons.description_outlined,
+                            color: Colors.white,
+                          ),
+                          title: const Text('Политика конфиденциальности',
+                              style: TextStyle(color: Colors.white)),
+                          onTap: () {
+                            Vibration.vibrate(duration: 40, amplitude: 10);
+                            Navigator.of(context).pop();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    const TermsOfUsePage()));
+                          },
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                        ListTile(
+                          leading: const Icon(
+                            Icons.description_outlined,
+                            color: Colors.white,
+                          ),
+                          title: const Text('Условия использования',
+                              style: TextStyle(color: Colors.white)),
+                          onTap: () {
+                            Vibration.vibrate(duration: 50, amplitude: 18);
+                            Navigator.of(context).pop();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    const PoliticsPage()));
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      height: 80,
+                      color: Colors.transparent,
+                      child: Column(
+                        children: [
+                         // const Spacer(),
+                          const Text(
+                            'Проект был выполнен в рамках конкурса "IT-Планета"',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontFamily: 'Raleway',
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            '4Editor v.1.0',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white.withOpacity(0.5),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

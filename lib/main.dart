@@ -277,7 +277,7 @@ void _openTelegramChannel() async {
                               Vibration.vibrate(duration: 50, amplitude: 5);
                               _openTelegramChannel;
                             },
-                            icon: Icon(Icons.telegram_outlined, color: Colors.blue, size: 40,),
+                            icon: Icon(Icons.telegram_outlined, color: Colors.white, size: 40,),
                             ),
                         ],
                       ),
