@@ -273,7 +273,10 @@ void _openTelegramChannel() async {
                       child: Column(
                         children: [
                           IconButton(
-                            onPressed: _openTelegramChannel, 
+                            onPressed:(){ 
+                              Vibration.vibrate(duration: 50, amplitude: 5);
+                              _openTelegramChannel;
+                            },
                             icon: Icon(Icons.telegram_outlined, color: Colors.blue, size: 40,),
                             ),
                         ],

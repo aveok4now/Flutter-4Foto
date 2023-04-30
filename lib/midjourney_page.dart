@@ -480,6 +480,7 @@ class _RecentImagesState extends State<RecentImages> {
   List<String> _images = [];
   bool _loading = true;
   ScrollController _scrollController = ScrollController();
+  
   int _crossAxisCount = 2;
   bool _showFloatingButton = false;
   bool isLongPressed = false;
@@ -507,6 +508,7 @@ class _RecentImagesState extends State<RecentImages> {
   }
 
   void _onScroll() {
+
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       _fetchRecentImages();
@@ -794,7 +796,7 @@ class ImageViewer extends StatelessWidget {
                   );
                 },
                 onPageChanged: (index) {
-                  Vibration.vibrate(duration: 40, amplitude: 9);
+                  
                   initialIndex = index;
                   print("index");
                   print(index);

@@ -73,6 +73,8 @@ dependencies:
   flutter_cache_manager: ^3.3.0
   cached_network_image: ^3.2.3
   vibration: ^1.7.6
+  flutter_icons: ^1.1.0
+
   
 flutter_native_splash:
   image: assets/sym6.png

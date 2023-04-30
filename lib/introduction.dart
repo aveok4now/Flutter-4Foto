@@ -11,20 +11,12 @@ class Introduction extends StatefulWidget {
   const Introduction({super.key});
 
   @override
- _IntroductionState createState() => _IntroductionState();
- 
+  _IntroductionState createState() => _IntroductionState();
 }
-
 
 class _IntroductionState extends State<Introduction> {
   PageController _controller = PageController();
-  bool onLastPage =false;
-
-
-
-  
-
-
+  bool onLastPage = false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,63 +30,63 @@ class _IntroductionState extends State<Introduction> {
     ).animate(_controller2);
     return Scaffold(
       body: Stack(
-        children:[ PageView(
-          controller: _controller,
-          onPageChanged: (index){
-            setState(() {
-              onLastPage = (index == 2);
-            });
-          },
-          children: [
-           IntroPage1(
-            
-           ),
-           IntroPage2(),
-           IntroPage3(),
-          ],
-        ),
-        Container(
-          alignment: Alignment(0, 0.75),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          PageView(
+            controller: _controller,
+            onPageChanged: (index) {
+              setState(() {
+                onLastPage = (index == 2);
+              });
+            },
             children: [
-              GestureDetector(
-                onTap: (){
-                   Vibration.vibrate(duration: 40, amplitude: 9);
-                  _controller.jumpToPage(2);
-                },
-                child: Text('Проп.'),
+              IntroPage1(),
+              IntroPage2(),
+              IntroPage3(),
+            ],
+          ),
+          Container(
+            alignment: Alignment(0, 0.75),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Vibration.vibrate(duration: 40, amplitude: 9);
+                    _controller.jumpToPage(2);
+                  },
+                  child: Text('Проп.'),
                 ),
-
-          SmoothPageIndicator(controller: _controller, count:3),
-          onLastPage
-          ? GestureDetector(
-                onTap: (){
-                  Vibration.vibrate(duration: 40, amplitude: 9);
-                  Navigator.push(context, 
-                  MaterialPageRoute(builder: (context){
-                      //return HomeScreen(animation: _animation);
-                      return HiddenDrawer();
-                  },),);
-                },
-                child: Text('Поехали'),
-                )
-          : GestureDetector(
-                onTap: (){
-                  Vibration.vibrate(duration: 40, amplitude: 9);
-                  _controller.nextPage(
-                    duration: Duration(milliseconds: 500), 
-                    curve: Curves.easeIn,
-                  );
-                },
-                child: Text('Далее')
+                SmoothPageIndicator(controller: _controller, count: 3),
+                onLastPage
+                    ? GestureDetector(
+                        onTap: () {
+                          Vibration.vibrate(duration: 40, amplitude: 9);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                //return HomeScreen(animation: _animation);
+                                return HiddenDrawer();
+                              },
+                            ),
+                          );
+                        },
+                        child: Text('Поехали'),
+                      )
+                    : GestureDetector(
+                        onTap: () {
+                          Vibration.vibrate(duration: 40, amplitude: 9);
+                          _controller.nextPage(
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.easeIn,
+                          );
+                        },
+                        child: Text('Далее')),
+              ],
+            ),
           ),
         ],
-        
       ),
-      ),
-        ],
-    ),
     );
   }
 }

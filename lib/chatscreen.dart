@@ -39,12 +39,16 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   late YoutubePlayerController _ytcontroller2;
   late YoutubePlayerController _ytcontroller3;
   late YoutubePlayerController _ytcontroller4;
-
+ ScrollController _scrollController2 = ScrollController();
   bool showVideo1 = false;
   bool showVideo2 = false;
   bool showVideo3 = false;
   bool showVideo4 = false;
 
+
+  
+  bool _showFloatingButton = false;
+  
   Offset _offset = Offset(0.0, 0.0);
 
   void onPanUpdate(DragUpdateDetails details) {
@@ -58,6 +62,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
 
   @override
   void initState() {
+    _scrollController2.addListener(_onScroll);
     final videoID = YoutubePlayer.convertUrlToId(videoURL1);
     final videoID2 = YoutubePlayer.convertUrlToId(videoURL2);
     final videoID3 = YoutubePlayer.convertUrlToId(videoURL3);
@@ -156,6 +161,20 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     );
   }
 
+void _onScroll() {
+ print(_showFloatingButton);
+    if (_scrollController.offset > 100) {
+      print(_scrollController.offset);
+      setState(() {
+        _showFloatingButton = true;
+      });
+    } else {
+      setState(() {
+        _showFloatingButton = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -223,6 +242,22 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
               ),
             ),
           ),
+           Positioned(
+          bottom: 16,
+          left: 16,
+          child: Visibility(
+            visible: _showFloatingButton,
+            child: FloatingActionButton(
+              onPressed: () {
+                Vibration.vibrate(duration: 50, amplitude: 5);
+                _scrollController.animateTo(0,
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.linear);
+              },
+              child: Icon(Icons.arrow_upward_rounded),
+            ),
+          ),
+        ),
           if (showVideo1)
             Expanded(
               child: Stack(
