@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:food/colors.dart';
 import 'package:gallery_saver/files.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vibration/vibration.dart';
 import 'hidden_drawer.dart';
 import 'image_screen.dart';
@@ -25,6 +26,8 @@ import 'package:http/http.dart' as http;
 import 'chat_gpt.dart';
 import 'introduction.dart';
 import 'package:device_preview/device_preview.dart';
+//import 'package:flutter_icons/flutter_icons.dart';
+
 /*void main() async {
   
   WidgetsFlutterBinding.ensureInitialized();
@@ -205,6 +208,15 @@ class HomeScreen extends StatelessWidget {
 
   final Animation<Color?> animation;
 
+void _openTelegramChannel() async {
+  const url = 'https://t.me/poizonshop'; 
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Не удалось открыть канал в Telegram';
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -252,6 +264,22 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                   
+                    Positioned(
+                    bottom: 50,
+                    left: 0,
+                    right: 0,
+
+                      child: Column(
+                        children: [
+                          IconButton(
+                            onPressed: _openTelegramChannel, 
+                            icon: Icon(Icons.telegram_outlined, color: Colors.blue, size: 40,),
+                            ),
+                        ],
+                      ),
+                    ),
+
                   Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -323,6 +351,8 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+
 
 class EditorScreen extends StatefulWidget {
   const EditorScreen({Key? key}) : super(key: key);
