@@ -103,7 +103,7 @@ class _IntroPage1State extends State<IntroPage1>
               child: Container(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  '4Editor v.1.0',
+                  '4Foto v.1.0',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 12.0,
