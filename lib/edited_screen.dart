@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:vibration/vibration.dart';
 
+import 'hidden_drawer.dart';
 import 'main.dart';
 
 class EditedImageScreen extends StatefulWidget {
@@ -154,6 +155,19 @@ class _EditedImageScreenState extends State<EditedImageScreen> {
                 children: [
                   IconButton(
                     icon: Icon(
+                      Icons.home,
+                    ),
+                    onPressed: () {
+                      Vibration.vibrate(duration: 40, amplitude: 9);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => HiddenDrawer(),
+                        ),
+                      );
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(
                       Icons.arrow_forward_ios,
                     ),
                     onPressed: () {
@@ -165,6 +179,7 @@ class _EditedImageScreenState extends State<EditedImageScreen> {
                       );
                     },
                   ),
+                  
                 ],
               ),
             ],
