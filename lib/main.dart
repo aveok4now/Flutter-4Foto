@@ -10,6 +10,7 @@ import 'package:gallery_saver/files.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vibration/vibration.dart';
+import 'camera.dart';
 import 'hidden_drawer.dart';
 import 'image_screen.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
@@ -177,19 +178,30 @@ Future<bool> _onBackPressed(BuildContext context) async {
           children: [
             Icon(Icons.power_settings_new, color: Colors.pink),
             SizedBox(width: 8),
-            Text('Уже уходите?', style: TextStyle(fontSize: 18, fontFamily: 'Raleway', fontWeight: FontWeight.bold),),
+            Text(
+              'Уже уходите?',
+              style: TextStyle(
+                  fontSize: 18,
+                  fontFamily: 'Raleway',
+                  fontWeight: FontWeight.bold),
+            ),
           ],
         ),
-        content: Text('Вы уверены, что хотите выйти?', style: TextStyle(fontFamily: 'Raleway', fontWeight: FontWeight.w500),),
+        content: Text(
+          'Вы уверены, что хотите выйти?',
+          style: TextStyle(fontFamily: 'Raleway', fontWeight: FontWeight.w500),
+        ),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Остаться', style: TextStyle(color: Colors.grey, fontFamily: 'Raleway')),
+            child: Text('Остаться',
+                style: TextStyle(color: Colors.grey, fontFamily: 'Raleway')),
           ),
           CupertinoButton(
             onPressed: () => Navigator.pop(context, true),
             color: Colors.deepPurple,
-            child: Text('Да', style: TextStyle(color: Colors.white, fontFamily: 'Raleway')),
+            child: Text('Да',
+                style: TextStyle(color: Colors.white, fontFamily: 'Raleway')),
           ),
         ],
       );
@@ -208,14 +220,15 @@ class HomeScreen extends StatelessWidget {
 
   final Animation<Color?> animation;
 
-void _openTelegramChannel() async {
-  const url = 'https://t.me/poizonshop'; 
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Не удалось открыть канал в Telegram';
+  void _openTelegramChannel() async {
+    print("я тут");
+    const url = 'https://t.me/sevsuforfoto';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Не удалось открыть канал в Telegram';
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -264,25 +277,26 @@ void _openTelegramChannel() async {
                       ),
                     ),
                   ),
-                   
-                    Positioned(
+                  Positioned(
                     bottom: 50,
                     left: 0,
                     right: 0,
-
-                      child: Column(
-                        children: [
-                          IconButton(
-                            onPressed:(){ 
-                              Vibration.vibrate(duration: 50, amplitude: 5);
-                              _openTelegramChannel;
-                            },
-                            icon: Icon(Icons.telegram_outlined, color: Colors.white, size: 40,),
-                            ),
-                        ],
-                      ),
+                    child: Column(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Vibration.vibrate(duration: 30, amplitude: 3);
+                            _openTelegramChannel();
+                          },
+                          icon: Icon(
+                            Icons.telegram_outlined,
+                            color: Colors.white,
+                            size: 40,
+                          ),
+                        ),
+                      ],
                     ),
-
+                  ),
                   Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -307,7 +321,7 @@ void _openTelegramChannel() async {
                           margin: EdgeInsets.only(top: 18),
                           child: CupertinoButton(
                             onPressed: () {
-                              Vibration.vibrate(duration: 40, amplitude: 9);
+                              Vibration.vibrate(duration: 30, amplitude: 3);
                               Navigator.push(
                                 context,
                                 PageRouteBuilder(
@@ -354,8 +368,6 @@ void _openTelegramChannel() async {
     );
   }
 }
-
-
 
 class EditorScreen extends StatefulWidget {
   const EditorScreen({Key? key}) : super(key: key);
@@ -477,7 +489,7 @@ class _EditorScreenState extends State<EditorScreen> {
                 children: [
                   CupertinoButton(
                     onPressed: () async {
-                      Vibration.vibrate(duration: 40, amplitude: 9);
+                      Vibration.vibrate(duration: 30, amplitude: 3);
                       final pickedFile = await ImagePicker().pickImage(
                         source: ImageSource.gallery,
                       );
@@ -508,7 +520,7 @@ class _EditorScreenState extends State<EditorScreen> {
                   const SizedBox(height: 16),
                   CupertinoButton(
                     onPressed: () async {
-                      Vibration.vibrate(duration: 40, amplitude: 9);
+                      Vibration.vibrate(duration: 30, amplitude: 3);
                       final pickedFile = await ImagePicker().pickImage(
                         source: ImageSource.camera,
                       );
@@ -528,6 +540,32 @@ class _EditorScreenState extends State<EditorScreen> {
                         Icon(Icons.camera_alt),
                         SizedBox(width: 8),
                         Text('Сделать фото'),
+                      ],
+                    ),
+                    color: Colors.deepPurple,
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    borderRadius: BorderRadius.circular(32),
+                  ),
+                  const SizedBox(height: 16),
+                  CupertinoButton(
+                    onPressed: () async {
+                      Vibration.vibrate(duration: 30, amplitude: 3);
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Camera(),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.video_camera_back_outlined,
+                        ),
+                        SizedBox(width: 8),
+                        Text('Фильтр-камера'),
                       ],
                     ),
                     color: Colors.deepPurple,
