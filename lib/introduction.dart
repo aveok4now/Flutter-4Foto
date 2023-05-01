@@ -51,16 +51,16 @@ class _IntroductionState extends State<Introduction> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Vibration.vibrate(duration: 40, amplitude: 9);
+                    Vibration.vibrate(duration: 30, amplitude: 3);
                     _controller.jumpToPage(2);
                   },
-                  child: Text('Проп.'),
+                  child: Text('Проп.', style: TextStyle(fontFamily: 'Raleway'),),
                 ),
                 SmoothPageIndicator(controller: _controller, count: 3),
                 onLastPage
                     ? GestureDetector(
                         onTap: () {
-                          Vibration.vibrate(duration: 40, amplitude: 9);
+                          Vibration.vibrate(duration: 30, amplitude: 3);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -71,17 +71,17 @@ class _IntroductionState extends State<Introduction> {
                             ),
                           );
                         },
-                        child: Text('Поехали'),
+                        child: Text('Поехали', style: TextStyle(fontFamily: 'Raleway'),),
                       )
                     : GestureDetector(
                         onTap: () {
-                          Vibration.vibrate(duration: 40, amplitude: 9);
+                          Vibration.vibrate(duration: 30, amplitude: 3);
                           _controller.nextPage(
                             duration: Duration(milliseconds: 500),
                             curve: Curves.easeIn,
                           );
                         },
-                        child: Text('Далее')),
+                        child: Text('Далее', style: TextStyle(fontFamily: 'Raleway'),)),
               ],
             ),
           ),
