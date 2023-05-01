@@ -68,7 +68,7 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 SizedBox(height: 18),
                 Text(
-                  '4Editor создан для улучшения фотографий. Следите за тем, что сегодня предлагает искусственный интеллект, делитесь, сохраняйте и редактируйте изображения.',
+                  '4Foto создан для улучшения фотографий. Следите за тем, что сегодня предлагает искусственный интеллект, делитесь, сохраняйте и редактируйте изображения.',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -176,7 +176,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           SizedBox(height: 8),
                           Text(
-                            '4Editor v.1.0',
+                            '4Foto v.1.0',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
