@@ -1,3 +1,5 @@
-# 4Editor
+# 4Foto
 
-Flutter Photo Editor
+Midjourney API, 
+Photo Chat-bot assistant, 
+Basic Photo/Image editing
