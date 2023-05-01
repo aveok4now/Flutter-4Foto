@@ -9,7 +9,7 @@
   </queries>
   
    <application
-        android:label="4Editor"
+        android:label="4Foto"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <provider
