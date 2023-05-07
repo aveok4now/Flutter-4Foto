@@ -554,13 +554,24 @@ class _EditorScreenState extends State<EditorScreen> {
                         source: ImageSource.camera,
                       );
                       if (pickedFile != null) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ImageScreen(imagePath: pickedFile.path),
-                          ),
-                        );
+                         String? imagePath;
+
+                        var b = await FlutterPhotoEditor()
+                            .editImage(pickedFile.path);
+                        setState(() {
+                          imagePath = pickedFile.path;
+                        });
+
+                        if (b == true) {
+                          File imageFile = File(pickedFile.path);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  EditedImageScreen(imageFile: imageFile),
+                            ),
+                          );
+                        }
                       }
                     },
                     child: Row(

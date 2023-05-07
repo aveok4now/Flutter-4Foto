@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_photo_editor/flutter_photo_editor.dart';
 import 'package:food/hidden_drawer.dart';
 import 'package:food/main.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -16,6 +17,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:vibration/vibration.dart';
+import 'edited_screen.dart';
 import 'image_screen.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -170,7 +172,8 @@ class _TopImagesState extends State<TopImages> {
       setState(() {
         _showFloatingButton = true;
       });
-    } else {
+    } 
+    else {
       setState(() {
         _showFloatingButton = false;
       });
@@ -843,14 +846,35 @@ class ImageViewer extends StatelessWidget {
                     final path = '${temp.path}/$timestamp-$fileName';
                     File file = File(path);
                     await file.writeAsBytes(bytes);
-                    Navigator.push(
+                   /* Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ImageScreen(
                           imagePath: path,
                         ),
                       ),
-                    );
+                    );*/
+                       String? imagePath;
+
+                        var b = await FlutterPhotoEditor()
+                            .editImage(path);
+                      
+                          imagePath = path;
+                       
+
+                        if (b == true) {
+                          File imageFile = File(path);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  EditedImageScreen(
+                                    imageFile: imageFile,
+                                    
+                                    ),
+                            ),
+                          );
+                        }
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,

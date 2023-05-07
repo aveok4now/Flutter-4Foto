@@ -76,6 +76,8 @@ dependencies:
   flutter_icons: ^1.1.0
   camera_filters: ^0.1.9
 
+
+
   
 flutter_native_splash:
   image: assets/sym6.png

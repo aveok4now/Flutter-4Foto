@@ -68,7 +68,7 @@ class _IntroPage1State extends State<IntroPage1>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.purple[300],
+      backgroundColor: Colors.purple[400],
       body: SafeArea(
         child: Column(
           children: [
