@@ -1,11 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_photo_editor/flutter_photo_editor.dart';
 import 'package:food/colors.dart';
+import 'package:food/edited_screen.dart';
+import 'package:food/photoeditor.dart';
 import 'package:gallery_saver/files.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -27,6 +31,7 @@ import 'package:http/http.dart' as http;
 import 'chat_gpt.dart';
 import 'introduction.dart';
 import 'package:device_preview/device_preview.dart';
+
 //import 'package:flutter_icons/flutter_icons.dart';
 
 /*void main() async {
@@ -301,6 +306,7 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        // ignore: deprecated_member_use
                         TypewriterAnimatedTextKit(
                           repeatForever: true,
                           speed: Duration(milliseconds: 100),
@@ -494,13 +500,36 @@ class _EditorScreenState extends State<EditorScreen> {
                         source: ImageSource.gallery,
                       );
                       if (pickedFile != null) {
-                        Navigator.push(
+                        final bytes = await pickedFile.readAsBytes();
+                        /*Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                ImageScreen(imagePath: pickedFile.path),
+
+                                //ImageScreen(imagePath: pickedFile.path),
+                            // PhotoEditor(),
+
                           ),
-                        );
+
+                        );*/
+                        String? imagePath;
+
+                        var b = await FlutterPhotoEditor()
+                            .editImage(pickedFile.path);
+                        setState(() {
+                          imagePath = pickedFile.path;
+                        });
+
+                        if (b == true) {
+                          File imageFile = File(pickedFile.path);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  EditedImageScreen(imageFile: imageFile),
+                            ),
+                          );
+                        }
                       }
                     },
                     child: Row(
