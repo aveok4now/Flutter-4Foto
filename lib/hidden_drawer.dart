@@ -1,12 +1,44 @@
+
+
 import 'package:flutter/material.dart';
+import 'package:food/data.network.client/giphy_client.dart';
+import 'package:food/data.repository/giphy_repository.dart';
+import 'package:food/data/data.network/data.network.entity/network_mapper.dart';
+import 'package:food/keys.dart';
 import 'package:food/main.dart';
 import 'package:food/midjourney_page.dart';
+import 'package:food/presentation.dart/gifs/detail/app_model.dart';
+import 'package:food/presentation.dart/gifs/gif_app.dart';
 import 'package:food/settings_page.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
+import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 
-import 'chat_gpt.dart';
 import 'chatscreen.dart';
 import 'links.dart';
+
+
+List <SingleChildWidget> createProviders(){
+  final log = Logger(printer: PrettyPrinter());
+  final networkMapper = NetworkMapper();
+  final giphyRepo = GiphyRepository(client: GiphyClient(
+    baseUrl: 'https://api.giphy.com/',
+    apiKey: giphyApiKey,
+    log: log,
+  ), mapper: networkMapper,);
+
+return [
+  Provider<Logger>.value(value:log),
+  Provider<GiphyRepository>.value(value: giphyRepo),
+  ChangeNotifierProvider<AppModel>(
+    create: (context) => AppModel(),
+  )
+];
+}
+
+
+
 
 class HiddenDrawer extends StatefulWidget {
   const HiddenDrawer({super.key});
@@ -34,8 +66,13 @@ class HiddenDrawerState extends State<HiddenDrawer> {
     fontFamily: 'Ubuntu',
   );
 
+
+final providers = createProviders();
+
   @override
   void initState() {
+     
+  
     super.initState();
     _pages = [
       ScreenHiddenDrawer(
@@ -56,6 +93,15 @@ class HiddenDrawerState extends State<HiddenDrawer> {
         ),
         JourneyPage(),
       ),
+        ScreenHiddenDrawer(
+        ItemHiddenMenu(
+          name: 'GIF-анимации',
+          baseStyle: myTextStyle,
+          selectedStyle: myTextStyle,
+          colorLineSelected: Colors.pink,
+        ),
+        GifApp(providers: providers),
+      ),
       ScreenHiddenDrawer(
         ItemHiddenMenu(
           name: 'Чат-бот',
@@ -65,6 +111,7 @@ class HiddenDrawerState extends State<HiddenDrawer> {
         ),
       ChatbotScreen(),
       ),
+    
       ScreenHiddenDrawer(
         ItemHiddenMenu(
           name: 'О программе',
@@ -74,6 +121,8 @@ class HiddenDrawerState extends State<HiddenDrawer> {
         ),
         SettingsPage(),
       ),
+      
+
       
     ];
   }
