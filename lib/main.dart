@@ -75,6 +75,7 @@ import 'package:device_preview/device_preview.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final providers = createProviders();
   final prefs = await SharedPreferences.getInstance();
 
   final lastVisit =
@@ -158,7 +159,7 @@ class MyApp extends StatelessWidget {
             Introduction(),
             HomeScreen(animation: _animation),
             HiddenDrawer(),
-            Introduction()
+            //Introduction()
           ],
         ),
       ),
