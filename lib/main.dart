@@ -159,7 +159,7 @@ class MyApp extends StatelessWidget {
             Introduction(),
             HomeScreen(animation: _animation),
             HiddenDrawer(),
-            //Introduction()
+            Introduction(),
           ],
         ),
       ),
